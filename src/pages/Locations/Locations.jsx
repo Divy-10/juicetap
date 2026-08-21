@@ -433,7 +433,7 @@ export default function Locations() {
                         <Button
                           variant="primary"
                           size="sm"
-                          href={getDirectionsUrl(sub.latitude, sub.longitude, sub.rawAddress || sub.name)}
+                          href={getDirectionsUrl(sub, selectedCity?.city)}
                           target="_blank"
                           rel="noopener noreferrer"
                           leftIcon={<NavigationIcon size={14} />}

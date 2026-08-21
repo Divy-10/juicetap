@@ -42,16 +42,37 @@ export const getWhatsAppUrl = (message) => {
   return `https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(message)}`;
 };
 
-export const getDirectionsUrl = (venue, cityName = '') => {
-  if (!venue) return 'https://www.google.com/maps';
+export const getDirectionsUrl = (arg1, arg2, arg3) => {
+  if (!arg1) return 'https://www.google.com/maps';
 
-  if (venue.latitude && venue.longitude) {
-    return `https://www.google.com/maps/dir/?api=1&destination=${venue.latitude},${venue.longitude}`;
+  let searchQuery = '';
+
+  // Case 1: Location Object passed (e.g. sub-location or venue object)
+  if (typeof arg1 === 'object' && arg1 !== null) {
+    const venue = arg1;
+    const cityName = arg2 || venue.city || '';
+
+    // Primary: Build Google Maps search query using Location Name + Full Address + City
+    const parts = [venue.name, venue.address || venue.rawAddress, cityName].filter(Boolean);
+    searchQuery = parts.join(', ');
+  } 
+  // Case 2: String address or direct search term passed
+  else if (typeof arg1 === 'string' && arg1.trim()) {
+    searchQuery = arg1.trim();
+  } 
+  // Case 3: Fallback arguments passed (lat, lng, addressString)
+  else if (typeof arg1 === 'number' || (typeof arg1 === 'string' && !isNaN(parseFloat(arg1)) && isFinite(arg1))) {
+    const address = arg3 || arg2 || '';
+    if (typeof address === 'string' && address.trim()) {
+      searchQuery = address.trim();
+    } else {
+      searchQuery = `${arg1},${arg2}`;
+    }
   }
 
-  const queryParts = [venue.name, venue.address, cityName].filter(Boolean);
-  const query = queryParts.join(', ');
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(query)}`;
+  if (!searchQuery) return 'https://www.google.com/maps';
+
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchQuery)}`;
 };
 
 export const NAV_LINKS = [
