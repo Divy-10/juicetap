@@ -1,0 +1,11 @@
+juicetap data 
+
+excel : 
+deployment id : AKfycbzHuHHBpvMIbFmQhRUAS_64_LHzL_CUaoCYtmR5IK_faX22eiejxgjwYVTMLFsUC87tHA
+
+web app : https://script.google.com/a/macros/urmpl.com/s/AKfycbzHuHHBpvMIbFmQhRUAS_64_LHzL_CUaoCYtmR5IK_faX22eiejxgjwYVTMLFsUC87tHA/exec
+
+library : https://script.google.com/macros/library/d/1PMoGvzvTH2PjRCO9cHqTGYJknMgU5FelZwmbaPLkOn7KmV3FoQaGtDey/1
+
+Add a location: Add a new row in your Sheet with status = active ➔ Refresh website ➔ New card appears.
+Hide a location: Change status to inactive in your Sheet ➔ Refresh website ➔ Card automatically disappears.
