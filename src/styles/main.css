@@ -4041,6 +4041,7 @@ strong, b {
   transform: scale(1.18) translateY(6px);
   transform-origin: bottom center;
   filter: none;
+  mix-blend-mode: lighten;
   transition: transform var(--transition-base);
   pointer-events: none;
 }
