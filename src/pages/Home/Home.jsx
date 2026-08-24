@@ -162,6 +162,24 @@ const scaleUp = {
   }
 };
 
+/* The hero mascot ships as a transparent-alpha WebM (VP9, ALPHA_MODE=1).
+   Chrome/Firefox/Android render its transparency correctly, but Apple WebKit
+   (iOS Safari, iOS Chrome, macOS Safari) does not support alpha in WebM and
+   fills the transparent area with BLACK. For those browsers only, we swap the
+   <video> for a transparent PNG of the same mascot — the floating/pulsing
+   motion comes from the framer-motion container, so it still animates.
+   Feature/platform detection runs once at module load (client-only SPA). */
+const IS_APPLE_WEBKIT = (() => {
+  if (typeof navigator === 'undefined') return false;
+  const ua = navigator.userAgent || '';
+  const isIOS =
+    /iP(ad|hone|od)/.test(ua) ||
+    (navigator.platform === 'MacIntel' && (navigator.maxTouchPoints || 0) > 1);
+  const isSafari =
+    /safari/i.test(ua) && !/(chrome|crios|chromium|android|edg|edgios|fxios|opr|opios)/i.test(ua);
+  return isIOS || isSafari;
+})();
+
 export default function Home() {
   const [locations, setLocations] = useState(LOCATIONS);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -347,14 +365,23 @@ export default function Home() {
                         rotate: { duration: 5.5, repeat: Infinity, ease: "easeInOut" }
                       }}
                     >
-                      <video
-                        src="/video/video-background-remover.webm"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="hero__glass-image hero__mascot-image hero__video"
-                      />
+                      {IS_APPLE_WEBKIT ? (
+                        <img
+                          src="/video/hero-mascot.png"
+                          alt="JuiceTap mascot"
+                          aria-hidden="true"
+                          className="hero__glass-image hero__mascot-image hero__video"
+                        />
+                      ) : (
+                        <video
+                          src="/video/video-background-remover.webm"
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="hero__glass-image hero__mascot-image hero__video"
+                        />
+                      )}
                     </motion.div>
                   </motion.div>
                 </div>
@@ -439,14 +466,23 @@ export default function Home() {
                     rotate: { duration: 5.5, repeat: Infinity, ease: "easeInOut" }
                   }}
                 >
-                  <video
-                    src="/video/video-background-remover.webm"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="hero__glass-image hero__mascot-image hero__video"
-                  />
+                  {IS_APPLE_WEBKIT ? (
+                    <img
+                      src="/video/hero-mascot.png"
+                      alt="JuiceTap mascot"
+                      aria-hidden="true"
+                      className="hero__glass-image hero__mascot-image hero__video"
+                    />
+                  ) : (
+                    <video
+                      src="/video/video-background-remover.webm"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="hero__glass-image hero__mascot-image hero__video"
+                    />
+                  )}
                 </motion.div>
               </motion.div>
             </div>
