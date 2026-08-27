@@ -16,7 +16,6 @@ import {
   CitrusField,
   CitrusGlow,
   CitrusDivider,
-  OrangeSlice,
 } from '../../components/Citrus/Citrus';
 import {
   WhatsAppIcon,
@@ -197,9 +196,7 @@ export default function Business() {
         <div className="jt-tech-grid" />
         <CitrusField variant="particles" density={7} />
 
-        <FloatingElement className="jt-hero-art franchise-hero__slice" amplitude={12} rotate={9} duration={9}>
-          <OrangeSlice size="100%" />
-        </FloatingElement>
+
 
         <div className="container">
           <div className="franchise-hero__grid">

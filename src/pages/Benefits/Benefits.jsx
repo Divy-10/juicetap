@@ -14,7 +14,6 @@ import {
   CitrusField,
   CitrusGlow,
   CitrusDivider,
-  OrangeSlice,
   LeafSprig,
   JuiceDroplet,
 } from '../../components/Citrus/Citrus';
@@ -61,14 +60,6 @@ export default function Benefits() {
       <section className="page-hero benefits-hero">
         <CitrusField variant="particles" density={9} />
 
-        {/* A slowly rotating orange cross-section: the whole fruit, nothing added. */}
-        <motion.div
-          className="jt-hero-art benefits-hero__slice"
-          animate={reduced ? undefined : { rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 60, ease: 'linear' }}
-        >
-          <OrangeSlice size="100%" />
-        </motion.div>
 
         <FloatingElement className="jt-hero-art benefits-hero__leaf" amplitude={16} rotate={-12} duration={8}>
           <LeafSprig size="100%" id="benefits" />
@@ -158,7 +149,7 @@ export default function Benefits() {
               Find a JuiceTap machine near you and experience the freshness for yourself.
             </p>
             <div className="benefits-cta__actions">
-              <Button to="/locations" variant="primary" size="lg">Find a JuiceTap</Button>
+              <Button to="/locations" variant="primary" size="lg">Find JuiceTap</Button>
               <Button href={getWhatsAppUrl(WHATSAPP_MESSAGES.general)} variant="outline-white" size="lg">
                 Talk to Us
               </Button>

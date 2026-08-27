@@ -8,7 +8,6 @@ import {
   CitrusField,
   CitrusGlow,
   CitrusDivider,
-  OrangeSlice,
   LeafSprig,
 } from '../../components/Citrus/Citrus';
 
@@ -97,9 +96,7 @@ export default function HowItWorks() {
       <section className="page-hero hiw-hero">
         <CitrusField variant="droplets" density={7} />
 
-        <FloatingElement className="jt-hero-art hiw-hero__orange" amplitude={13} rotate={10} duration={8}>
-          <OrangeSlice size="100%" />
-        </FloatingElement>
+
 
         <FloatingElement className="jt-hero-art hiw-hero__leaf" amplitude={11} rotate={-14} duration={9.5} delay={0.8}>
           <LeafSprig size="100%" id="hiw" />
@@ -168,7 +165,7 @@ export default function HowItWorks() {
               Find a JuiceTap machine near you and experience the freshness for yourself.
             </p>
             <Button to="/locations" variant="white" size="lg">
-              Find a JuiceTap
+              Find JuiceTap
             </Button>
           </Reveal>
         </div>

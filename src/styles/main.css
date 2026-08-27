@@ -1387,7 +1387,7 @@ strong, b {
 }
 
 .navbar__logo img {
-  height: 34px;
+  height: 50px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.06));
@@ -1399,13 +1399,8 @@ strong, b {
   align-items: center;
   gap: var(--space-xl);
   list-style: none;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 8px 24px;
-  border-radius: var(--radius-full);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: var(--shadow-sm);
+  background: transparent;
+  padding: 0;
   margin-left: auto;
   margin-right: -4.5rem;
 }
@@ -1621,7 +1616,7 @@ strong, b {
 }
 
 .navbar__mobile-logo img {
-  height: 36px;
+  height: 48px;
   width: auto;
   object-fit: contain;
 }
@@ -1771,7 +1766,7 @@ strong, b {
 @media (max-width: 1200px) and (min-width: 1025px) {
   .navbar__links {
     gap: var(--space-md);
-    padding: 6px 16px;
+    padding: 0;
   }
 }
 
@@ -1792,7 +1787,7 @@ strong, b {
   }
 
   .navbar__logo img {
-    height: 32px;
+    height: 44px;
   }
 
   .navbar__mobile {
@@ -1835,8 +1830,14 @@ strong, b {
   gap: var(--space-md);
 }
 
+.footer__logo {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+}
+
 .footer__logo img {
-  height: 42px;
+  height: 55px;
   width: auto;
   object-fit: contain;
 }
@@ -4041,7 +4042,6 @@ strong, b {
   transform: scale(1.18) translateY(6px);
   transform-origin: bottom center;
   filter: none;
-  mix-blend-mode: lighten;
   transition: transform var(--transition-base);
   pointer-events: none;
 }
@@ -4197,44 +4197,36 @@ strong, b {
 
 /* Sourcing Story Canvas - Full Viewport Width & Spacing */
 .sourcing-canvas {
-  /* The route overlay uses preserveAspectRatio="none" so its coordinates
-     line up exactly with the country markers' percentages. That stretches
-     the overlay non-uniformly, so anything inside it that must stay in
-     proportion (the planes, the arrival rings) is squashed back by this
-     ratio. Value = (canvas width / 1000) / (canvas height / 500). */
-  --map-squash: 0.92;
-  --plane-scale: 1.12;
+  /* The canvas is locked to the map's native 1024:510 ratio and the map is
+     object-fit:fill, so the image, the preserveAspectRatio="none" overlay
+     and the %-positioned country markers all share ONE coordinate space at
+     every viewport width — no letterboxing, no drift. Because that box ratio
+     equals the SVG viewBox ratio the overlay scales uniformly, so ships and
+     rings need no squash correction (--map-squash stays 1); --ship-scale is
+     the single knob that keeps the little ships readable per breakpoint. */
+  --map-squash: 1;
+  --ship-scale: 1.08;
 
   position: relative;
   width: 100%;
-  max-width: 1380px;
-  min-height: 620px;
-  margin: 2rem auto 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  max-width: 1240px;
+  aspect-ratio: 1024 / 510;
+  margin: 2.25rem auto 0;
 }
 
 .world-map-backdrop {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .world-map-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
-  opacity: 0.95;
+  object-fit: fill;
+  opacity: 0.96;
   mix-blend-mode: multiply;
-  filter: drop-shadow(0 15px 35px rgba(15, 56, 30, 0.08));
+  filter: drop-shadow(0 18px 40px rgba(15, 56, 30, 0.08));
 }
 
 .world-map-overlay-svg {
@@ -4247,100 +4239,141 @@ strong, b {
   z-index: 2;
 }
 
-/* ===== AIR FREIGHT: ORANGE CRATES FLOWN IN TO THE INDIA HUB =====
-   Each route's dashes march toward India, and a cargo plane flies the
-   same curve carrying a crate of Valencia oranges. The planes are
-   positioned with CSS `offset-path`, which is GPU-composited, so the
-   whole sequence costs three transforms per frame and nothing else. */
+/* ===== SEA FREIGHT: CONTAINER SHIPS SAILING IN TO THE INDIA HUB =====
+   Each route's dashes drift toward India, and a container ship sails the
+   same curve carrying Valencia-orange containers. The ships are positioned
+   with CSS `offset-path`, which is GPU-composited, so the whole sequence
+   costs three transforms per frame and nothing else. */
 
-/* The dashes flow toward India instead of sitting static. Both of these
-   routes are authored India-first, so the flow is reversed to point the
-   right way. */
 .connection-path {
-  animation: freightFlow 1.6s linear infinite;
+  animation: freightFlow 1.8s linear infinite;
+  filter: drop-shadow(0 1px 3px rgba(240, 129, 33, 0.25));
 }
 
-/* Increasing stroke-dashoffset shifts the pattern toward the path's
-   start point, and every route is authored India-first — so the dashes
-   travel from the sourcing country in to India. */
+/* Every route is authored source -> India, so a NEGATIVE dash offset
+   drifts the dashes toward the path's end — i.e. in to India. */
 @keyframes freightFlow {
-  to { stroke-dashoffset: 24; }
+  to { stroke-dashoffset: -28; }
 }
 
-.cargo-plane {
+.cargo-ship {
   /* Hidden unless the browser can actually follow a motion path,
-     otherwise all three planes would pile up at the SVG origin. */
+     otherwise all three ships would pile up at the SVG origin. */
   visibility: hidden;
   offset-rotate: auto;
   offset-distance: 0%;
-  /* Applied before the motion-path transform, so this scales the plane
-     without disturbing where it sits on its route. The scaleY cancels the
-     overlay's non-uniform stretch so the freighter stays in proportion. */
-  transform: scale(var(--plane-scale)) scaleY(var(--map-squash));
+  /* Applied before the motion-path transform, so it scales the ship
+     without disturbing where it sits on its route. scaleY(--map-squash)
+     stays as a safety valve if a breakpoint ever reintroduces stretch. */
+  transform: scale(var(--ship-scale)) scaleY(var(--map-squash));
+  filter: drop-shadow(0 3px 5px rgba(15, 56, 30, 0.22));
   will-change: offset-distance;
 }
 
 @supports (offset-path: path('M 0,0 L 1,1')) {
-  .cargo-plane {
+  .cargo-ship {
     visibility: visible;
-    animation: freightFly 13s linear infinite;
+    /* Sine-style easing instead of linear, so the ship eases along its
+       route rather than sliding at a robotic constant speed. It fades in
+       and out at the route ends, so the loop rejoins seamlessly. */
+    animation: freightSail 15s cubic-bezier(0.42, 0, 0.58, 1) infinite;
   }
 }
 
-@keyframes freightFly {
+@keyframes freightSail {
   0%   { offset-distance: 0%;   opacity: 0; }
-  6%   {                        opacity: 1; }
-  88%  {                        opacity: 1; }
+  8%   {                        opacity: 1; }
+  85%  {                        opacity: 1; }
   100% { offset-distance: 100%; opacity: 0; }
 }
 
-/* Flight paths are the reverse of the dashed routes above, so every
-   plane flies FROM its sourcing country INTO India. Durations and
-   negative delays are deliberately uneven so the three never
-   synchronise into a mechanical-looking convoy. */
-.cargo-plane--australia {
-  offset-path: path('M 803,269 Q 674,252 545,220');
-  animation-duration: 13s;
-  animation-delay: -1s;
+/* The hull rides in an inner group that gently bobs up/down and rocks a
+   couple of degrees, so it reads as sailing on water rather than gliding.
+   This composes with the outer group's path-tangent rotation, and the tilt
+   is small enough that the ship never flips or leaves its route. */
+.cargo-ship__body {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: shipBob 3.6s ease-in-out infinite;
 }
 
-.cargo-plane--south-africa {
-  offset-path: path('M 238,340 Q 330,297 435,230');
-  animation-duration: 16s;
-  animation-delay: -7s;
+.cargo-ship--south-africa .cargo-ship__body { animation-delay: -1.2s; }
+.cargo-ship--australia .cargo-ship__body { animation-delay: -2.4s; }
+
+@keyframes shipBob {
+  0%, 100% { transform: translateY(-0.5px) rotate(-1.7deg); }
+  50%      { transform: translateY(0.6px) rotate(1.7deg); }
 }
 
-.cargo-plane--egypt {
-  offset-path: path('M 241,130 Q 330,152 435,190');
-  animation-duration: 14.5s;
-  animation-delay: -11s;
+/* Sea routes match the dashed paths above exactly, so every ship sails
+   FROM its sourcing country IN to India. Durations and negative delays
+   are deliberately uneven so the three never lock into a mechanical convoy. */
+.cargo-ship--egypt {
+  offset-path: path('M 563,260 Q 620,345 686,286');
+  animation-duration: 15s;
+  animation-delay: -2s;
 }
 
-/* Wingtip navigation lights blink, which is what actually sells these
-   as aircraft at map scale. */
-.cargo-plane__nav-light {
-  animation: navBlink 1.9s ease-in-out infinite;
+.cargo-ship--south-africa {
+  offset-path: path('M 553,444 Q 665,378 686,286');
+  animation-duration: 18.5s;
+  animation-delay: -9s;
 }
 
-.cargo-plane--south-africa .cargo-plane__nav-light { animation-delay: -0.7s; }
-.cargo-plane--egypt .cargo-plane__nav-light { animation-delay: -1.3s; }
-
-@keyframes navBlink {
-  0%, 44%, 100% { opacity: 0.35; }
-  50%, 62%      { opacity: 1; }
+.cargo-ship--australia {
+  offset-path: path('M 855,434 Q 800,450 686,286');
+  animation-duration: 16.5s;
+  animation-delay: -13s;
+  /* This route runs east -> west, so its path tangent points leftward and
+     `offset-rotate: auto` would turn the ship keel-up. Pre-mirroring it
+     vertically cancels that: after the ~180deg tangent rotation the hull
+     lands upright again, still sailing bow-first toward India. */
+  transform: scale(var(--ship-scale)) scaleY(calc(var(--map-squash) * -1));
 }
 
-/* Arrival rings at the India hub. */
-.arrival-rings {
-  transform-origin: 490px 210px;
-  transform: scaleY(var(--map-squash));
+/* Bow foam pulses softly as each ship cuts through the water. */
+.cargo-ship__bow-foam {
+  animation: bowFoam 1.4s ease-in-out infinite;
 }
 
+.cargo-ship--south-africa .cargo-ship__bow-foam { animation-delay: -0.5s; }
+.cargo-ship--australia .cargo-ship__bow-foam { animation-delay: -0.9s; }
+
+@keyframes bowFoam {
+  0%, 100% { opacity: 0.45; }
+  50%      { opacity: 0.95; }
+}
+
+/* The trailing wake breathes very subtly with the ship's bob. */
+.cargo-ship__wake {
+  animation: wakePulse 3.6s ease-in-out infinite;
+}
+
+.cargo-ship--south-africa .cargo-ship__wake { animation-delay: -1.2s; }
+.cargo-ship--australia .cargo-ship__wake { animation-delay: -2.4s; }
+
+@keyframes wakePulse {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 0.9; }
+}
+
+/* Soft destination glow pulsing behind India. */
+.india-hub-glow {
+  transform-origin: 686px 286px;
+  animation: hubGlow 4.6s ease-in-out infinite;
+}
+
+@keyframes hubGlow {
+  0%, 100% { transform: scale(0.9);  opacity: 0.65; }
+  50%      { transform: scale(1.12); opacity: 1; }
+}
+
+/* Arrival rings rippling out at the India hub as freight lands. */
 .arrival-ring {
   fill: none;
   stroke: #F08121;
   stroke-width: 2;
-  transform-origin: 490px 210px;
+  transform-origin: 686px 286px;
   animation: arrivalRing 4.6s ease-out infinite;
 }
 
@@ -4400,12 +4433,19 @@ strong, b {
    map, so it goes completely still for reduced-motion visitors. */
 @media (prefers-reduced-motion: reduce) {
   .connection-path,
-  .cargo-plane,
-  .cargo-plane__nav-light,
+  .cargo-ship,
+  .cargo-ship__body,
+  .cargo-ship__bow-foam,
+  .cargo-ship__wake,
+  .india-hub-glow,
   .arrival-ring,
   .location-orange-fruit-pin,
   .india-cargo-drop {
     animation: none !important;
+  }
+
+  .india-hub-glow {
+    opacity: 0.8;
   }
 
   .india-cargo-drop {
@@ -4425,6 +4465,11 @@ strong, b {
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* The top/left percentage is a geographic point on the map, and the SVG
+     overlay shares that exact percentage space, so anchoring the marker's
+     CENTRE here puts the orange pin — and the label hanging below it — on
+     the same spot the route starts from, at every screen size. */
+  transform: translate(-50%, -50%);
 }
 
 .location-orange-fruit-pin {
@@ -4432,7 +4477,6 @@ strong, b {
   height: 28px;
   object-fit: contain;
   filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.25));
-  margin-bottom: 4px;
   transition: transform 0.3s ease;
 }
 
@@ -4440,11 +4484,28 @@ strong, b {
   transform: scale(1.2) rotate(10deg);
 }
 
+/* Label hangs below the pin, out of flow, so it never shifts the pin off
+   its geographic point. */
 .country-direct-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 2px;
+}
+
+/* The two southern markers sit low on the map, so their labels ride ABOVE
+   the pin — this keeps the pin exactly on the country while lifting the
+   label clear of the canvas's bottom edge at every screen size. */
+.marker--south-africa .country-direct-label,
+.marker--australia .country-direct-label {
+  top: auto;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: 5px;
 }
 
 .c-name {
@@ -4463,27 +4524,54 @@ strong, b {
   white-space: nowrap;
 }
 
+/* Geographic centres, read off the map: pin (top,left) = marker-left% x 10.24,
+   marker-top% x 5.1 in the SVG overlay's viewBox coordinate space. */
 .marker--australia {
-  top: 52%;
-  left: 77%;
+  top: 85%;
+  left: 83.5%;
 }
 
 .marker--egypt {
-  top: 24%;
-  left: 20%;
+  top: 51.5%;
+  left: 55%;
 }
 
 .marker--south-africa {
-  top: 66%;
-  left: 17%;
+  top: 87%;
+  left: 54%;
 }
 
 .marker--india {
-  top: 42%;
-  left: 49%;
+  top: 56%;
+  left: 67%;
   transform: translate(-50%, -50%);
   position: absolute;
   z-index: 5;
+}
+
+/* Soft halo behind the JuiceTap glass so India reads as the glowing
+   destination the ships arrive at. Sits behind the product, above the map. */
+.india-destination-halo {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  width: 160px;
+  height: 160px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240, 129, 33, 0.22), rgba(240, 129, 33, 0) 68%);
+  z-index: -1;
+  pointer-events: none;
+  animation: haloPulse 4.6s ease-in-out infinite;
+}
+
+@keyframes haloPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.7; }
+  50%      { transform: translate(-50%, -50%) scale(1.1);  opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .india-destination-halo { animation: none; }
 }
 
 .india-product-overlay {
@@ -4606,36 +4694,31 @@ strong, b {
   font-weight: var(--font-weight-semibold);
 }
 
-/* Responsive Sourcing Canvas */
+/* ===== Responsive Sourcing Canvas =====
+   The canvas keeps its 1024:510 aspect ratio at every width, so the map,
+   routes and pins never drift apart — they just scale as one. Because the
+   whole canvas shrinks, the ships would become specks, so --ship-scale is
+   bumped up as the viewport narrows to keep them readable, and the product
+   media / labels are stepped down so nothing overcrowds the smaller map. */
 @media (max-width: 1024px) {
   .sourcing-canvas {
-    min-height: 650px;
+    --ship-scale: 1.28;
+    max-width: 760px;
   }
 
-  /* Canvas is ~960 x 650 here, so the overlay stretch is stronger. */
-  .sourcing-canvas {
-    --map-squash: 0.74;
-    --plane-scale: 1.28;
+  .product-media-wrap {
+    width: 88px;
+    height: 116px;
+  }
+
+  .india-destination-halo {
+    width: 128px;
+    height: 128px;
   }
 
   .india-cargo-drop {
     width: 32px;
     right: -16px;
-  }
-  .sourcing-connection-svg {
-    display: none;
-  }
-  .country-node--australia {
-    top: 2%;
-    left: 2%;
-  }
-  .country-node--egypt {
-    top: 2%;
-    right: 2%;
-  }
-  .country-node--south-africa {
-    bottom: 15%;
-    right: 2%;
   }
 }
 
@@ -4652,41 +4735,12 @@ strong, b {
   }
 
   .sourcing-canvas {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 2 / 1;
-    min-height: unset;
+    --ship-scale: 1.5;
     margin-top: 0.75rem;
-    display: block;
-  }
-
-  .world-map-backdrop {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .world-map-img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
   }
 
   .valencia-corner-badge {
     display: none;
-  }
-
-  /* --- Air freight at phone scale --- */
-  /* The map SVG scales down with its viewBox, which would leave the
-     freighters as ~15px specks. Scale them back up so they stay
-     readable, and shrink the landing crate so it no longer competes
-     with the JuiceTap cup it is being delivered to. */
-  /* The canvas is locked to 2:1 at this size, which matches the viewBox
-     exactly — so there is no stretch left to cancel. */
-  .sourcing-canvas {
-    --map-squash: 1;
-    --plane-scale: 1.55;
   }
 
   .arrival-ring {
@@ -4700,35 +4754,18 @@ strong, b {
   }
 
   .product-media-wrap {
-    width: 48px;
-    height: 64px;
+    width: 54px;
+    height: 72px;
   }
 
-  .marker--india {
-    top: 42%;
-    left: 49%;
-    transform: translate(-50%, -50%);
-  }
-
-  .marker--egypt {
-    top: 20%;
-    left: 16%;
-  }
-
-  .marker--south-africa {
-    top: 66%;
-    left: 12%;
-  }
-
-  .marker--australia {
-    top: 54%;
-    left: 72%;
-    right: auto;
+  .india-destination-halo {
+    width: 84px;
+    height: 84px;
   }
 
   .location-orange-fruit-pin {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
   }
 
   .country-direct-label {
@@ -4736,10 +4773,37 @@ strong, b {
   }
 
   .c-name {
-    font-size: 0.52rem;
+    font-size: 0.55rem;
     font-weight: 800;
     padding: 1px 5px;
     border-radius: 8px;
+  }
+}
+
+@media (max-width: 460px) {
+  .sourcing-canvas {
+    --ship-scale: 1.7;
+  }
+
+  .product-media-wrap {
+    width: 46px;
+    height: 60px;
+  }
+
+  .india-destination-halo {
+    width: 68px;
+    height: 68px;
+  }
+
+  .c-name {
+    font-size: 0.48rem;
+    padding: 1px 4px;
+    letter-spacing: 0.02em;
+  }
+
+  .location-orange-fruit-pin {
+    width: 13px;
+    height: 13px;
   }
 }
 

@@ -12,7 +12,7 @@ export default function Footer() {
           {/* Brand column */}
           <div className="footer__brand">
             <Link to="/" className="footer__logo" aria-label="JuiceTap Home">
-              <img src="/assets/logo.png" alt="JuiceTap" width="130" height="42" />
+              <img src="/assets/logo.png" alt="JuiceTap" height="55" />
             </Link>
             <p className="footer__tagline">{SITE_TAGLINE}</p>
             <div className="footer__contact-info">

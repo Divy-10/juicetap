@@ -7,7 +7,6 @@ import {
   CitrusField,
   CitrusGlow,
   CitrusDivider,
-  OrangeSlice,
   LeafSprig,
   PeelCurve,
 } from '../../components/Citrus/Citrus';
@@ -68,9 +67,7 @@ export default function Contact() {
               <FloatingElement className="jt-hero-art contact-hero__peel" amplitude={10} rotate={-7} duration={11} delay={1.2}>
                 <PeelCurve size="100%" id="contact" />
               </FloatingElement>
-              <FloatingElement className="jt-hero-art contact-hero__slice" amplitude={15} rotate={11} duration={8.5}>
-                <OrangeSlice size="100%" />
-              </FloatingElement>
+
               <FloatingElement className="jt-hero-art contact-hero__leaf" amplitude={9} rotate={13} duration={9} delay={0.5}>
                 <LeafSprig size="100%" id="contact" />
               </FloatingElement>

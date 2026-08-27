@@ -15,25 +15,7 @@ import { motion, useReducedMotion } from 'framer-motion';
    Primitive shapes
    -------------------------------------------------------------- */
 
-export const OrangeSlice = ({ size = 90, className = '', style }) => (
-  <svg
-    viewBox="0 0 100 100"
-    className={`citrus-svg ${className}`}
-    style={{ width: size, height: size, ...style }}
-    aria-hidden="true"
-    focusable="false"
-  >
-    <circle cx="50" cy="50" r="48" fill="#FF9E2C" />
-    <circle cx="50" cy="50" r="42" fill="#FFF8ED" />
-    <path d="M50,50 L50,10 C55,10 62,12 68,17 C75,23 78,29 78,50 Z" fill="#FB8C00" />
-    <path d="M50,50 L78,50 C78,55 78,62 72,68 C66,75 59,78 50,78 Z" fill="#F4511E" />
-    <path d="M50,50 L50,90 C45,90 38,88 32,83 C25,77 22,71 22,50 Z" fill="#FB8C00" />
-    <path d="M50,50 L22,50 C22,45 22,38 28,32 C34,25 41,22 50,22 Z" fill="#F4511E" />
-    <path d="M50,50 L77,23 C83,29 87,38 87,50 Z" fill="#FFA726" />
-    <path d="M50,50 L23,77 C17,71 13,62 13,50 Z" fill="#FFA726" />
-    <circle cx="50" cy="50" r="6" fill="#FFF8ED" />
-  </svg>
-);
+export const OrangeSlice = () => null;
 
 export const LeafSprig = ({ size = 70, className = '', style, id = 'a' }) => (
   <svg

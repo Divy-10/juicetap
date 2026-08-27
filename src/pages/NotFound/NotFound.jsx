@@ -3,7 +3,7 @@ import SEO from '../../components/SEO';
 import Button from '../../components/Button/Button';
 import PageShell from '../../components/PageShell/PageShell';
 import { FloatingElement, MagneticButton } from '../../components/Motion/Motion';
-import { CitrusGlow, OrangeSlice, LeafSprig, JuiceDroplet } from '../../components/Citrus/Citrus';
+import { CitrusGlow, LeafSprig, JuiceDroplet } from '../../components/Citrus/Citrus';
 
 /* 404 storytelling: A JUICE THAT ROLLED AWAY.
    The middle zero of "404" is an orange that has rolled off course,
@@ -36,15 +36,7 @@ export default function NotFound() {
             <div className="not-found__code">
               <span className="visually-hidden">404</span>
               <span aria-hidden="true">4</span>
-              <motion.span
-                className="not-found__orange"
-                aria-hidden="true"
-                initial={reduced ? undefined : { x: 60, rotate: 140, opacity: 0 }}
-                animate={reduced ? undefined : { x: 0, rotate: 0, opacity: 1 }}
-                transition={reduced ? undefined : { duration: 1.05, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <OrangeSlice size="100%" />
-              </motion.span>
+              <span aria-hidden="true">0</span>
               <span aria-hidden="true">4</span>
             </div>
 

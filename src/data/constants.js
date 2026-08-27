@@ -25,8 +25,8 @@ export const COMPANY = {
 export const GOOGLE_BUSINESS_PROFILE_URL = 'https://www.google.com/search?kgmid=/g/11m63f5ml9&hl=en-IN&q=JUICETAP+GLOBAL+PVT+LTD&shem=epsd1,ltae,rimspwouoe&shndl=30&source=sh/x/loc/osrp/m5/1&kgs=37dfc24dbdee35dc&utm_source=epsd1,ltae,rimspwouoe,sh/x/loc/osrp/m5/1#lrd=0x3be04d005926f77f:0x9594640509ce63bb,1,,,,';
 
 export const SOCIAL = {
-  instagram: 'https://www.instagram.com/juicetap.global?igsh=MWVwaWZ4a3h2YmRpNA==',
-  linkedin: 'https://www.linkedin.com/company/juicetap-global-pvt-ltd/posts/?feedView=all',
+  instagram: 'https://www.instagram.com/juicetap.global',
+  linkedin: 'https://www.linkedin.com/company/juicetap-global-pvt-ltd',
   youtube: 'https://www.youtube.com/@JuiceTap.Global',
   googleBusiness: GOOGLE_BUSINESS_PROFILE_URL,
 };
@@ -216,7 +216,7 @@ export const USP_ITEMS = [
   { icon: 'fresh', title: 'Freshly Squeezed', description: 'Squeezed on demand' },
   { icon: 'sugar', title: 'No Added Sugar', description: 'Zero artificial sugars' },
   { icon: 'preservatives', title: 'No Preservatives', description: 'Zero added chemicals' },
-  { icon: 'hygienic', title: 'Hygienic', description: 'Contactless process' },
+  { icon: 'hygienic', title: 'Fully Hygienic', description: 'Contactless process' },
   { icon: 'seconds', title: 'Under 60 Secs', description: 'Fast automated serving' },
 ];
 

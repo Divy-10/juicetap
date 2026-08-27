@@ -4,7 +4,7 @@ import SEO from '../../components/SEO';
 import Button from '../../components/Button/Button';
 import ContactForm from '../../components/ContactForm/ContactForm';
 import AppDownload from '../../components/AppDownload/AppDownload';
-import PeelKraftFloatingPromo from '../../components/PeelKraftFloatingPromo/PeelKraftFloatingPromo';
+
 import {
   USP_ITEMS,
   HOW_IT_WORKS_STEPS,
@@ -30,19 +30,6 @@ const LeafSVG = () => (
   </svg>
 );
 
-const OrangeSliceSVG = () => (
-  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%', filter: 'drop-shadow(0px 12px 24px rgba(0, 0, 0, 0.2))' }}>
-    <circle cx="50" cy="50" r="48" fill="#FF9E2C" />
-    <circle cx="50" cy="50" r="43" fill="#FFF8ED" />
-    <path d="M50,50 L50,9 C55.5,9 62,11 69,17 C76,23 79,29.5 79,50 Z" fill="#FB8C00" />
-    <path d="M50,50 L79,50 C79,55.5 79,62 73,69 C67,76 60.5,79 50,79 Z" fill="#F4511E" />
-    <path d="M50,50 L50,91 C44.5,91 38,89 31,83 C24,77 21,70.5 21,50 Z" fill="#FB8C00" />
-    <path d="M50,50 L21,50 C21,44.5 21,38 27,31 C33,24 39.5,21 50,21 Z" fill="#F4511E" />
-    <path d="M50,50 L78,22 C84,28 88,38 88,50 Z" fill="#FFA726" />
-    <path d="M50,50 L22,78 C16,72 12,62 12,50 Z" fill="#FFA726" />
-    <circle cx="50" cy="50" r="6" fill="#FFF8ED" />
-  </svg>
-);
 
 const LiquidSplashSVG = () => (
   <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%' }}>
@@ -90,55 +77,69 @@ const FluidDivider5 = ({ bg = '#0F381E', fill = 'var(--color-cream)' }) => (
   </div>
 );
 
-/* Air-cargo plane for the Global Orange Sourcing map.
-   Drawn nose-first along +X so `offset-rotate: auto` banks it correctly
-   as it follows each flight path. The crate slung in the hold is what
-   makes it read as freight rather than a passenger jet. Sized in the
-   map SVG's own viewBox units (1000 x 500). */
-const CargoPlane = ({ route }) => (
-  <g className={`cargo-plane cargo-plane--${route}`} aria-hidden="true">
-    {/* Vapour trail. Sits behind the tail and is symmetric about the
-        flight axis, so it stays correct at any bearing. */}
+/* Premium container ship for the Global Orange Sourcing map.
+   Drawn bow-first along +X so `offset-rotate: auto` turns the hull to face
+   its direction of travel along each sea route. A clean white hull with an
+   orange waterline and a mixed white/orange container stack reads instantly
+   as an international freighter while staying elegant at map scale. The wake
+   sits on the outer group (steady on the water); the hull rides in an inner
+   `__body` group that gently bobs and rocks as it sails. Sized in the map
+   SVG's own viewBox units (1024 x 510). */
+const CargoShip = ({ route }) => (
+  <g className={`cargo-ship cargo-ship--${route}`} aria-hidden="true">
+    {/* Slim foam wake trailing off the stern, fading out behind. */}
     <path
-      className="cargo-plane__trail"
-      d="M-20,-2.2 C-30,-1.8 -40,-1 -50,0 C-40,1 -30,1.8 -20,2.2 Z"
+      className="cargo-ship__wake"
+      d="M-16,3.4 C-26,2.9 -35,3.1 -44,3.9 C-35,4.7 -26,4.6 -16,4.2 Z"
       fill="url(#cargoTrailGrad)"
     />
 
-    {/* Main wings, swept back */}
-    <path d="M4,-2.8 L-9,-15.5 L-2.6,-15.5 L9,-2.8 Z" fill="#D46A10" stroke="#FFFFFF" strokeWidth="0.8" strokeLinejoin="round" />
-    <path d="M4,2.8 L-9,15.5 L-2.6,15.5 L9,2.8 Z" fill="#D46A10" stroke="#FFFFFF" strokeWidth="0.8" strokeLinejoin="round" />
+    <g className="cargo-ship__body">
+      {/* Hull — white body with an orange waterline and a pointed bow at +X */}
+      <path
+        d="M-16,-2 L12,-2 L19.5,2.3 L12,6.6 L-14,6.6 Q-16,6.6 -16,4.8 Z"
+        fill="#FFFFFF"
+      />
+      {/* Orange lower hull / waterline band */}
+      <path
+        d="M-16,3.5 L15,3.5 L19.5,2.3 L12,6.6 L-14,6.6 Q-16,6.6 -16,4.8 Z"
+        fill="#F08121"
+      />
+      {/* Crisp unifying outline on top of both fills */}
+      <path
+        d="M-16,-2 L12,-2 L19.5,2.3 L12,6.6 L-14,6.6 Q-16,6.6 -16,4.8 Z"
+        fill="none"
+        stroke="#1F4A34"
+        strokeWidth="0.8"
+        strokeLinejoin="round"
+      />
+      {/* Thin highlight where the white meets the orange */}
+      <path d="M-15.6,3.5 L14.4,3.5" stroke="rgba(255,255,255,0.6)" strokeWidth="0.5" />
 
-    {/* Engine pods */}
-    <rect x="-3.4" y="-10.6" width="5.6" height="2.8" rx="1.4" fill="#8A4708" />
-    <rect x="-3.4" y="7.8" width="5.6" height="2.8" rx="1.4" fill="#8A4708" />
+      {/* Stern superstructure — white bridge, tiny windows and an orange funnel */}
+      <rect x="-13.6" y="-10.2" width="1.7" height="2.4" rx="0.4" fill="#F08121" stroke="#FFFFFF" strokeWidth="0.3" />
+      <rect x="-15" y="-8" width="3.7" height="6" rx="0.7" fill="#FFFFFF" stroke="#1F4A34" strokeWidth="0.55" />
+      <rect x="-14.2" y="-6.9" width="2.1" height="0.85" rx="0.2" fill="#A9C6D2" />
+      <rect x="-14.2" y="-5.3" width="2.1" height="0.85" rx="0.2" fill="#A9C6D2" />
 
-    {/* Tailplane */}
-    <path d="M-12,-2 L-19,-8.8 L-14.6,-8.8 L-8.6,-2 Z" fill="#C25E0B" stroke="#FFFFFF" strokeWidth="0.7" strokeLinejoin="round" />
-    <path d="M-12,2 L-19,8.8 L-14.6,8.8 L-8.6,2 Z" fill="#C25E0B" stroke="#FFFFFF" strokeWidth="0.7" strokeLinejoin="round" />
+      {/* Stacked containers — clean white with orange accents. Bottom row. */}
+      <rect x="-10.6" y="-6" width="5" height="4" rx="0.4" fill="#F08121" stroke="#CDB89C" strokeWidth="0.4" />
+      <rect x="-5.2" y="-6" width="5" height="4" rx="0.4" fill="#FFFFFF" stroke="#CDB89C" strokeWidth="0.4" />
+      <rect x="0.2" y="-6" width="5" height="4" rx="0.4" fill="#FFFFFF" stroke="#CDB89C" strokeWidth="0.4" />
+      <rect x="5.6" y="-6" width="4.6" height="4" rx="0.4" fill="#F08121" stroke="#CDB89C" strokeWidth="0.4" />
+      {/* Top row */}
+      <rect x="-7.4" y="-9.2" width="5" height="3.2" rx="0.4" fill="#FFFFFF" stroke="#CDB89C" strokeWidth="0.4" />
+      <rect x="-2" y="-9.2" width="5" height="3.2" rx="0.4" fill="#F08121" stroke="#CDB89C" strokeWidth="0.4" />
+      <rect x="3.4" y="-9.2" width="3.8" height="3.2" rx="0.4" fill="#FFFFFF" stroke="#CDB89C" strokeWidth="0.4" />
 
-    {/* Fuselage */}
-    <path
-      d="M19,0 C15,-3.4 6,-4.2 -14,-4 Q-19.5,-3.8 -19.5,0 Q-19.5,3.8 -14,4 C6,4.2 15,3.4 19,0 Z"
-      fill="#F08121"
-      stroke="#FFFFFF"
-      strokeWidth="1.1"
-    />
-
-    {/* Flight deck */}
-    <path d="M17.6,0 C15.4,-2.2 13,-2.7 11,-2.7 L11,2.7 C13,2.7 15.4,2.2 17.6,0 Z" fill="#FFF3E4" />
-
-    {/* Open cargo hold with the crate of Valencia oranges. Centred on the
-        flight axis so it reads correctly whichever way the plane banks. */}
-    <rect x="-9.5" y="-3" width="16" height="6" rx="1.4" fill="#8A4708" />
-    <rect x="-8.6" y="-2.3" width="14.2" height="4.6" rx="1" fill="#B5651D" />
-    <circle cx="-5.6" cy="0" r="1.75" fill="#FFA726" stroke="#FFF3E4" strokeWidth="0.4" />
-    <circle cx="-1.4" cy="0" r="1.75" fill="#FB8C00" stroke="#FFF3E4" strokeWidth="0.4" />
-    <circle cx="2.8" cy="0" r="1.75" fill="#FFA726" stroke="#FFF3E4" strokeWidth="0.4" />
-
-    {/* Wingtip navigation lights */}
-    <circle className="cargo-plane__nav-light" cx="-5.8" cy="-14.4" r="1.15" fill="#FFF3E4" />
-    <circle className="cargo-plane__nav-light" cx="-5.8" cy="14.4" r="1.15" fill="#FFF3E4" />
+      {/* Bow foam as the ship cuts forward */}
+      <path
+        className="cargo-ship__bow-foam"
+        d="M19.5,2.3 Q23,2.7 23.2,4.8 Q20.8,3.8 18.8,4 Z"
+        fill="#FFFFFF"
+        opacity="0.8"
+      />
+    </g>
   </g>
 );
 
@@ -264,7 +265,7 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="Fresh Juice. One Tap Away."
+        title="Fresh Juice. Just a Tap Away."
         description="JuiceTap — freshly squeezed orange juice served through smart vending technology. 100% natural, no added sugar, no preservatives. Find a JuiceTap near you."
         path="/"
       />
@@ -277,23 +278,6 @@ export default function Home() {
         onMouseLeave={handleMouseLeave}
       >
         <div className="hero__background-orange" />
-
-        {/* Floating Orange Slices */}
-        <motion.div
-          className="hero__decor slice-1"
-          animate={{ y: [0, -18, 0], rotate: [0, 15, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          <OrangeSliceSVG />
-        </motion.div>
-
-        <motion.div
-          className="hero__decor slice-2"
-          animate={{ y: [0, 20, 0], rotate: [0, -20, 0] }}
-          transition={{ duration: 6.5, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          <OrangeSliceSVG />
-        </motion.div>
 
         {/* Floating Leaves */}
         <motion.div
@@ -333,11 +317,12 @@ export default function Home() {
 
                   <motion.h1 className="hero__title display-title" variants={textReveal}>
                     Fresh Juice.<br />
-                    <span className="hero__title-accent">One Tap Away.</span>
+                    <span className="hero__title-accent">Just a Tap Away.</span>
                   </motion.h1>
 
                   <motion.p className="hero__description" variants={textReveal}>
-                    Freshly squeezed orange juice, powered by smart vending technology.
+                    Freshly squeezed Premium Valencia Orange juice,<br />
+                    powered by smart vending technology.
                   </motion.p>
                 </div>
 
@@ -419,11 +404,7 @@ export default function Home() {
                     </div>
                   </motion.a>
 
-                  {/* Scroll Down */}
-                  <motion.div className="hero__scroll-down" variants={textReveal}>
-                    <span>Scroll Down</span>
-                    <div className="scroll-arrow">↓</div>
-                  </motion.div>
+
                 </div>
 
               </motion.div>
@@ -560,80 +541,91 @@ export default function Home() {
             </motion.p>
           </motion.div>
 
-          {/* GEOGRAPHIC STORYBOARD CANVAS: FULL-WIDTH WORLD MAP & 3 GLOBAL ROUTES */}
+          {/* GEOGRAPHIC STORYBOARD CANVAS: FULL WORLD MAP & 3 GLOBAL SEA ROUTES */}
           <div className="sourcing-canvas">
 
-            {/* Full Width Sourcing Map Backdrop (Africa, India, Australia) */}
+            {/* Full-world map backdrop. Fresh oranges set sail from Australia,
+                Egypt and South Africa and arrive by sea at the India hub. */}
             <div className="world-map-backdrop">
               <img
-                src="/assets/juicetap-map-africa-india-aus.png"
-                alt="JuiceTap Sourcing Map - Africa, India, Australia"
+                src="/assets/juicetap-world-clean.png"
+                alt="JuiceTap global sourcing — sea routes to India"
                 className="world-map-img"
+                loading="lazy"
+                decoding="async"
               />
-              {/* preserveAspectRatio="none" makes this overlay's coordinate
-                  system map straight onto the canvas: x/10 and y/5 are the
-                  same percentages the country markers are positioned with.
-                  With the default "meet" the overlay was letterboxed by a
-                  different amount at every viewport width, so the routes
-                  drifted away from their pins (South Africa was missing by
-                  ~60px). The slight non-uniform scale this introduces is
-                  cancelled per breakpoint by --map-squash in the CSS. */}
+              {/* The canvas is locked to the map's 1024:510 aspect ratio and the
+                  image is object-fit:fill, so the map, this overlay
+                  (preserveAspectRatio="none") and the % positioned country
+                  markers all share one coordinate space at every viewport
+                  width. x = marker-left% x 10.24, y = marker-top% x 5.1. */}
               <svg
                 className="world-map-overlay-svg"
-                viewBox="0 0 1000 500"
+                viewBox="0 0 1024 510"
                 preserveAspectRatio="none"
                 fill="none"
               >
                 <defs>
-                  {/* Vapour trail fades out behind each freighter */}
-                  <linearGradient id="cargoTrailGrad" x1="-20" y1="0" x2="-50" y2="0" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stopColor="#F08121" stopOpacity="0.4" />
-                    <stop offset="100%" stopColor="#F08121" stopOpacity="0" />
+                  {/* Foam wake fades out behind each ship's stern */}
+                  <linearGradient id="cargoTrailGrad" x1="-15" y1="0" x2="-46" y2="0" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.7" />
+                    <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
                   </linearGradient>
+                  {/* Soft glow that pulses around the India destination */}
+                  <radialGradient id="indiaHubGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="#F08121" stopOpacity="0.30" />
+                    <stop offset="55%" stopColor="#F08121" stopOpacity="0.10" />
+                    <stop offset="100%" stopColor="#F08121" stopOpacity="0" />
+                  </radialGradient>
                 </defs>
 
-                {/* Routes run from the edge of the JuiceTap cup (49%, 42%)
-                    out to each country pin. Coordinates are the marker's own
-                    percentages x10 / x5, and each route stops exactly on the
-                    edge of its pin rather than short of it. */}
+                {/* Pulsing destination glow behind India */}
+                <circle className="india-hub-glow" cx="686" cy="286" r="70" fill="url(#indiaHubGlow)" />
 
-                {/* Route 1: India -> Australia pin (81.5%, 54%) */}
+                {/* Curved dashed SEA ROUTES, each running source -> India across
+                    the ocean. Coordinates are marker-left% x 10.24 /
+                    marker-top% x 5.1, so the dashes align with the pins. */}
+
+                {/* Egypt -> India: down the Red Sea, east across the Arabian Sea */}
                 <path
-                  d="M 545,220 Q 674,252 803,269"
+                  d="M 563,260 Q 620,345 686,286"
                   stroke="#F08121"
-                  strokeWidth="3"
-                  strokeDasharray="6 6"
-                  className="connection-path path-australia"
-                />
-                {/* Route 2: India -> South Africa pin (23%, 68.6%) */}
-                <path
-                  d="M 435,230 Q 330,297 238,340"
-                  stroke="#F08121"
-                  strokeWidth="3"
-                  strokeDasharray="6 6"
-                  className="connection-path path-south-africa"
-                />
-                {/* Route 3: India -> Egypt pin (22.9%, 25%) */}
-                <path
-                  d="M 435,190 Q 330,152 241,130"
-                  stroke="#F08121"
-                  strokeWidth="3"
-                  strokeDasharray="6 6"
+                  strokeWidth="2.4"
+                  strokeDasharray="7 7"
+                  strokeLinecap="round"
                   className="connection-path path-egypt"
                 />
+                {/* South Africa -> India: up the Indian Ocean */}
+                <path
+                  d="M 553,444 Q 665,378 686,286"
+                  stroke="#F08121"
+                  strokeWidth="2.4"
+                  strokeDasharray="7 7"
+                  strokeLinecap="round"
+                  className="connection-path path-south-africa"
+                />
+                {/* Australia -> India: a deep arc through the open Indian Ocean,
+                    sweeping south of the Indonesian islands up to India */}
+                <path
+                  d="M 855,434 Q 800,450 686,286"
+                  stroke="#F08121"
+                  strokeWidth="2.4"
+                  strokeDasharray="7 7"
+                  strokeLinecap="round"
+                  className="connection-path path-australia"
+                />
 
-                {/* AIR FREIGHT: crates of Valencia oranges flown in from each
-                    sourcing country to the India hub. Each plane follows the
-                    reverse of its route above via CSS `offset-path`, so the
-                    direction of travel is always country -> India. */}
-                <CargoPlane route="australia" />
-                <CargoPlane route="south-africa" />
-                <CargoPlane route="egypt" />
+                {/* SEA FREIGHT: container ships carrying Valencia oranges sail
+                    each route above from its sourcing country in to the India
+                    hub, positioned by CSS `offset-path` (GPU-composited). */}
+                <CargoShip route="egypt" />
+                <CargoShip route="south-africa" />
+                <CargoShip route="australia" />
 
-                {/* Arrival rings at the India hub — the map "receiving" freight */}
+                {/* Arrival rings rippling out at the India hub as freight lands */}
                 <g className="arrival-rings" aria-hidden="true">
-                  <circle className="arrival-ring arrival-ring--1" cx="490" cy="210" r="16" />
-                  <circle className="arrival-ring arrival-ring--2" cx="490" cy="210" r="16" />
+                  <circle className="arrival-ring arrival-ring--1" cx="686" cy="286" r="16" />
+                  <circle className="arrival-ring arrival-ring--2" cx="686" cy="286" r="16" />
                 </g>
               </svg>
             </div>
@@ -663,18 +655,30 @@ export default function Home() {
               </div>
             </div>
 
-            {/* 4. CENTRAL HERO INDIA HUB — JUICETAP GLASS AT CENTER OF INDIA */}
+            {/* 4. CENTRAL HERO INDIA HUB — JUICETAP GLASS AT CENTER OF INDIA.
+                 The destination every sea route arrives at. On Apple WebKit
+                 the alpha WebM renders black, so those browsers get the
+                 transparent PNG of the same product instead. */}
             <div className="sourcing-marker-label marker--india">
+              <span className="india-destination-halo" aria-hidden="true" />
               <div className="india-product-overlay">
                 <div className="product-media-wrap">
-                  <video
-                    src="/video/video-background-remover.webm"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="sourcing-glass-video"
-                  />
+                  {IS_APPLE_WEBKIT ? (
+                    <img
+                      src="/video/hero-mascot.png"
+                      alt="JuiceTap fresh orange juice"
+                      className="sourcing-glass-video"
+                    />
+                  ) : (
+                    <video
+                      src="/video/video-background-remover.webm"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="sourcing-glass-video"
+                    />
+                  )}
                 </div>
 
                 {/* Freight landing here: a crate pops in on the same rhythm
@@ -1242,8 +1246,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Floating PeelKraft Promotional Toggle */}
-      <PeelKraftFloatingPromo />
+
     </>
   );
 }

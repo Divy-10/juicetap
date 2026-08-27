@@ -32,7 +32,7 @@ export default function Navbar() {
     <header className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`} role="banner">
       <nav className="navbar__inner container-wide" aria-label="Main navigation">
         <Link to="/" className="navbar__logo" aria-label="JuiceTap Home">
-          <img src="/assets/logo.png" alt="JuiceTap Logo" width="140" height="44" />
+          <img src="/assets/logo.png" alt="JuiceTap Logo" height="50" />
         </Link>
 
         <ul className="navbar__links" role="menubar">
@@ -123,7 +123,7 @@ export default function Navbar() {
       >
         <div className="navbar__mobile-header">
           <Link to="/" className="navbar__mobile-logo" onClick={() => setMobileOpen(false)}>
-            <img src="/assets/logo.png" alt="JuiceTap Logo" width="120" height="38" />
+            <img src="/assets/logo.png" alt="JuiceTap Logo" height="48" />
           </Link>
           <button 
             className="navbar__mobile-close" 

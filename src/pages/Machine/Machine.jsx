@@ -16,7 +16,6 @@ import {
   CitrusField,
   CitrusGlow,
   CitrusDivider,
-  OrangeSlice,
   JuiceDroplet,
 } from '../../components/Citrus/Citrus';
 import { MachineIcon, ShieldIcon, SparklesIcon, ClockIcon, CheckIcon, JuiceIcon } from '../../components/Icons/Icons';
@@ -65,9 +64,7 @@ export default function Machine() {
           />
         )}
 
-        <FloatingElement className="jt-hero-art machine-hero__slice" amplitude={12} rotate={8} duration={9}>
-          <OrangeSlice size="100%" />
-        </FloatingElement>
+
 
         <div className="container">
           <div className="machine-hero__layout">
