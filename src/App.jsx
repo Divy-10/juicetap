@@ -9,6 +9,7 @@ import Home from './pages/Home/Home';
 import About from './pages/About/About';
 import HowItWorks from './pages/HowItWorks/HowItWorks';
 import Benefits from './pages/Benefits/Benefits';
+import MeetChampion from './pages/MeetChampion/MeetChampion';
 import Machine from './pages/Machine/Machine';
 import Locations from './pages/Locations/Locations';
 import Business from './pages/Business/Business';
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/benefits" element={<Benefits />} />
+          <Route path="/meet-champion" element={<MeetChampion />} />
           <Route path="/machine" element={<Machine />} />
           <Route path="/locations" element={<Locations />} />
           <Route path="/business" element={<Business />} />

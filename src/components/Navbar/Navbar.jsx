@@ -40,10 +40,21 @@ export default function Navbar() {
             <li key={link.path} role="none">
               <Link
                 to={link.path}
-                className={`navbar__link ${location.pathname === link.path ? 'navbar__link-active' : ''}`}
+                className={`navbar__link ${link.isLogo ? 'navbar__link--champion' : ''} ${
+                  location.pathname === link.path ? 'navbar__link-active' : ''
+                }`}
                 role="menuitem"
+                aria-label={link.isLogo ? link.label : undefined}
               >
-                {link.label}
+                {link.isLogo ? (
+                  <img
+                    src="/assets/meet-champion-logo.png"
+                    alt="Meet Champion"
+                    className="navbar__champion-logo-img"
+                  />
+                ) : (
+                  link.label
+                )}
               </Link>
             </li>
           ))}
@@ -140,10 +151,20 @@ export default function Navbar() {
               <li key={link.path}>
                 <Link
                   to={link.path}
-                  className={`navbar__mobile-link ${location.pathname === link.path ? 'navbar__mobile-link-active' : ''}`}
+                  className={`navbar__mobile-link ${link.isLogo ? 'navbar__mobile-link--champion' : ''} ${
+                    location.pathname === link.path ? 'navbar__mobile-link-active' : ''
+                  }`}
                   onClick={() => setMobileOpen(false)}
                 >
-                  {link.label}
+                  {link.isLogo ? (
+                    <img
+                      src="/assets/meet-champion-logo.png"
+                      alt="Meet Champion"
+                      className="navbar__mobile-champion-logo-img"
+                    />
+                  ) : (
+                    link.label
+                  )}
                 </Link>
               </li>
             ))}

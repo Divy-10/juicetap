@@ -404,6 +404,20 @@ export default function Home() {
                     </div>
                   </motion.a>
 
+                  {/* Meet Champion — entry point to the mascot experience */}
+                  <motion.div variants={textReveal} className="hero__meet-champion-wrap">
+                    <Button
+                      to="/meet-champion"
+                      className="hero__meet-champion"
+                      aria-label="Meet Champion, the JuiceTap mascot"
+                    >
+                      <img src="/video/hero-mascot.png" alt="" aria-hidden="true" className="hero__meet-champion-mascot" />
+                      <span className="hero__meet-champion-text">
+                        <strong>Meet Champion 🍊</strong>
+                        <span>Your friendly guide to fresher juice ↗</span>
+                      </span>
+                    </Button>
+                  </motion.div>
 
                 </div>
 

@@ -82,6 +82,7 @@ export const NAV_LINKS = [
   { label: 'Machine', path: '/machine' },
   { label: 'Locations', path: '/locations' },
   { label: 'Franchise', path: '/business' },
+  { label: 'Meet Champion', path: '/meet-champion', isLogo: true },
 ];
 
 export const FOOTER_LINKS = {
