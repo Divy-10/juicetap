@@ -13293,20 +13293,61 @@ strong, b {
 
 /* Speech bubbles */
 .jt-page--champion .champion-bubble {
-  position: absolute; z-index: 6; max-width: min(280px, 84%);
-  padding: 0.8rem 1.05rem; background: #fff; color: var(--color-forest);
-  font-weight: 600; font-size: 0.9rem; line-height: 1.42; border-radius: 16px;
-  border: 1.5px solid rgba(240, 129, 33, 0.28); box-shadow: var(--shadow-md);
+  position: absolute;
+  z-index: 6;
+  width: max-content;
+  max-width: clamp(240px, 80vw, 320px);
+  padding: 0.9rem 1.25rem;
+  background: #FFFFFF;
+  color: var(--color-forest);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(0.85rem, 1.2vw, 0.96rem);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  text-align: center;
+  border-radius: 20px;
+  border: 1.5px solid rgba(240, 129, 33, 0.28);
+  box-shadow: 0 10px 28px -4px rgba(240, 129, 33, 0.16), 0 4px 12px rgba(15, 56, 30, 0.06);
+  will-change: transform, opacity;
 }
 .jt-page--champion .champion-bubble__tail {
-  position: absolute; width: 16px; height: 16px; background: #fff;
-  border-right: 1.5px solid rgba(240, 129, 33, 0.28); border-bottom: 1.5px solid rgba(240, 129, 33, 0.28);
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #FFFFFF;
+  border-right: 1.5px solid rgba(240, 129, 33, 0.28);
+  border-bottom: 1.5px solid rgba(240, 129, 33, 0.28);
   transform: rotate(45deg);
+  pointer-events: none;
 }
-.jt-page--champion .champion-bubble--hero { top: 0; right: -2%; }
-.jt-page--champion .champion-bubble--hero .champion-bubble__tail { bottom: -8px; left: 30px; }
-.jt-page--champion .champion-bubble--story { top: -0.6rem; left: 50%; transform: translateX(-50%); text-align: center; }
-.jt-page--champion .champion-bubble--story .champion-bubble__tail { bottom: -8px; left: 50%; margin-left: -8px; }
+
+/* Hero Section Speech Bubble Position & Tail */
+.jt-page--champion .champion-bubble--hero {
+  top: -1.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+}
+.jt-page--champion .champion-bubble--hero .champion-bubble__tail {
+  bottom: -8px;
+  left: 50%;
+  margin-left: -7px;
+}
+
+/* Benefit Story Section Speech Bubble Position & Tail */
+.jt-page--champion .champion-bubble--story {
+  top: -2.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  margin: 0;
+}
+.jt-page--champion .champion-bubble--story .champion-bubble__tail {
+  bottom: -8px;
+  left: 50%;
+  margin-left: -7px;
+}
 
 /* Champion poses (transform-only) */
 .jt-page--champion .champion-figure--point { animation: champ-point 3s ease-in-out infinite; transform-origin: bottom center; }
@@ -13619,7 +13660,7 @@ strong, b {
   .jt-page--champion .champion-hero__stage { order: 1; }
   .jt-page--champion .champion-hero__lead { margin-left: auto; margin-right: auto; }
   .jt-page--champion .champion-hero__actions, .jt-page--champion .champion-hero__chips { justify-content: center; }
-  .jt-page--champion .champion-stage--hero { max-width: 300px; }
+  .jt-page--champion .champion-stage--hero { max-width: 300px; margin-top: 1.2rem; }
   .jt-page--champion .champion-stage--hero .champion-img { max-height: 340px; }
 
   /* Story: stage becomes a slim sticky top banner, scenes scroll under it */
@@ -13629,10 +13670,21 @@ strong, b {
     background: linear-gradient(180deg, var(--color-cream) 82%, rgba(255,249,242,0));
     flex-direction: column;
   }
-  .jt-page--champion .champion-stage--story { max-width: 190px; }
+  .jt-page--champion .champion-stage--story { max-width: 220px; margin-top: 1.8rem; }
   .jt-page--champion .champion-stage--story .champion-img { max-height: 190px; }
-  .jt-page--champion .champion-bubble--story { position: relative; top: 0; margin-bottom: 0.6rem; max-width: 300px; }
-  .jt-page--champion .champion-bubble--story .champion-bubble__tail { display: none; }
+  .jt-page--champion .champion-bubble--story {
+    top: -2.2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: min(280px, 90vw);
+    font-size: 0.85rem;
+    padding: 0.7rem 1rem;
+  }
+  .jt-page--champion .champion-bubble--story .champion-bubble__tail {
+    bottom: -7px;
+    left: 50%;
+    margin-left: -6px;
+  }
   .jt-page--champion .champion-rail { position: static; transform: none; flex-direction: row; justify-content: center; gap: 0; margin-top: 0.4rem; order: 3; }
   .jt-page--champion .champion-rail__step { flex-direction: column; gap: 0.2rem; padding: 0 0.7rem 0 0; }
   .jt-page--champion .champion-rail__line { left: 34px; top: 16px; width: 0.7rem; height: 2px; }
@@ -13655,10 +13707,16 @@ strong, b {
 }
 @media (max-width: 560px) {
   .jt-page--champion { --champ-pad: clamp(2.2rem, 7vw, 3rem); }
-  .jt-page--champion .champion-bubble--hero { position: relative; top: 0; right: 0; margin: 0 auto 0.4rem; max-width: 300px; }
-  .jt-page--champion .champion-bubble--hero .champion-bubble__tail { display: none; }
-  .jt-page--champion .champion-stage--hero { max-width: 250px; }
-  .jt-page--champion .champion-img { max-height: 300px; }
+  .jt-page--champion .champion-bubble--hero {
+    top: -1.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: min(260px, 88vw);
+    font-size: 0.84rem;
+    padding: 0.65rem 0.95rem;
+  }
+  .jt-page--champion .champion-stage--hero { max-width: 250px; margin-top: 1.6rem; }
+  .jt-page--champion .champion-img { max-height: 290px; }
   .jt-page--champion .champion-hero__actions .btn { width: 100%; justify-content: center; }
   .jt-page--champion .champion-badge-orb { width: 116px; }
   .hero__meet-champion { width: 100%; }
