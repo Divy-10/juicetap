@@ -74,7 +74,7 @@ function doPost(e) {
     var subject = 'Your JuiceTap Champion Certificate 🍊🏆';
     var htmlBody = _certificateEmailHtml(name, city);
 
-    
+
     // Decode inline logo blob for email client CID embedding
     MailApp.sendEmail({
       to: email,
@@ -115,8 +115,8 @@ function _certificateEmailHtml(name, city) {
     '<!-- Header -->' +
     '<tr>' +
     '<td align="center" style="background-color:#ffffff;padding:28px 24px 20px;border-bottom:3px solid #F08121;">' +
-    '<div style="font-size:28px;font-weight:900;color:#F08121;letter-spacing:1px;font-family:sans-serif;">Juice<span style="color:#0F381E;">Tap</span>™</div>' +
-    '<div style="font-size:11px;font-weight:800;color:#F08121;margin-top:6px;letter-spacing:2px;text-transform:uppercase;">FRESH JUICE. ONE TAP AWAY.</div>' +
+    '<img src="cid:juicetapLogo" alt="JuiceTap" width="180" style="display:block;width:180px;max-width:100%;height:auto;border:0;outline:none;margin:0 auto;" />' +
+    '<div style="font-size:11px;font-weight:800;color:#F08121;margin-top:10px;letter-spacing:2px;text-transform:uppercase;">FRESH JUICE. ONE TAP AWAY.</div>' +
     '</td>' +
     '</tr>' +
 

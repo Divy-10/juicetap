@@ -106,7 +106,7 @@ export default function About() {
         </div>
       </section>
 
-      <CitrusDivider variant="arc" from="#FFE9D6" to="#FFFFFF" />
+      <CitrusDivider variant="arc" from="#E86F10" to="#FFFFFF" />
 
       {/* ===== 2 & 3. PROBLEM / SOLUTION ===== */}
       <section className="section jt-section about-problem-solution-section">
@@ -129,7 +129,7 @@ export default function About() {
         </div>
       </section>
 
-      <CitrusDivider variant="peel" from="#FFFFFF" to="#F08121" />
+      <CitrusDivider variant="peel" from="#FFFFFF" to="#16532B" />
 
       {/* ===== 4. ENGINEERING PURE FRESHNESS ===== */}
       <section className="section section-orange-feature jt-section about-feature-animated">
@@ -159,7 +159,7 @@ export default function About() {
         </div>
       </section>
 
-      <CitrusDivider variant="arc" from="#F08121" to="#FFF9F2" />
+      <CitrusDivider variant="arc" from="#0F381E" to="#FFF9F2" />
 
       {/* ===== 6. OUR CORE VALUES ===== */}
       <section className="section jt-section about-values-section">

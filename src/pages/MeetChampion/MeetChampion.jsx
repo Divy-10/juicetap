@@ -128,7 +128,7 @@ export default function MeetChampion() {
       />
 
       <ChampionHero reduced={reduced} onDiscover={() => scrollTo('benefits')} />
-      <CitrusDivider variant="peel" from="transparent" to="#FFF9F2" />
+      <CitrusDivider variant="peel" from="#E86F10" to="#FFF9F2" />
       <BenefitStory reduced={reduced} />
       <CitrusDivider variant="arc" from="#FFF9F2" to="#123B20" />
       <ChampionsPromise reduced={reduced} onClaim={() => scrollTo('certificate')} />
