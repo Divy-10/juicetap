@@ -6732,8 +6732,10 @@ strong, b {
 .about-problem-solution-section {
   position: relative;
   background: #FFFFFF;
-  padding: var(--section-padding);
-  overflow: hidden;
+  padding: calc(var(--section-padding) * 0.4) 0 var(--section-padding);
+  margin-top: clamp(-2.8rem, -4.5vw, -4rem);
+  z-index: 3;
+  overflow: visible;
 }
 
 .about-bg-orb {
@@ -13919,4 +13921,155 @@ strong, b {
 @keyframes heroMascotTipPulse {
   0%, 100% { transform: translate(-50%, 60%) scale(1); }
   50%      { transform: translate(-50%, 52%) scale(1.04); }
+}
+
+/* ============================================================================
+   ORANGE-HERO REDESIGN — About + Meet Champion
+   ----------------------------------------------------------------------------
+   Purely additive overrides (appended after all existing rules, so they win
+   on source order / specificity). Goal: each page opens on a dominant ORANGE
+   (#F08121) hero with white typography + dark-green accents, then hands off to
+   the existing dark-green / white / orange-accent sections. No existing rule
+   is edited; nothing outside these two pages is touched.
+   ============================================================================ */
+
+/* ============================ ABOUT — ORANGE HERO ========================== */
+.jt-page--about .page-hero.about-hero-animated {
+  background: linear-gradient(150deg, #F7972F 0%, #F08121 52%, #E86F10 100%);
+}
+
+/* The hero used to fade its cream bottom edge into white. On orange that fade
+   is wrong — the CitrusDivider now carries orange → white, so remove it. */
+.jt-page--about .about-hero-animated::after {
+  background: none;
+  height: 0;
+}
+
+/* "Smart technology" blueprint grid — recolour to faint WHITE lines so the
+   texture reads on orange instead of the old dark-green-on-cream. */
+.jt-page--about .about-hero-animated::before {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* Backdrop glow → soft white bloom instead of orange-on-orange. */
+.jt-page--about .about-hero-bg-glow {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+/* Heading → solid white (was a dark-green gradient-clip for the cream hero). */
+.jt-page--about .about-hero-animated .about-hero__card h1,
+.jt-page--about .about-hero-animated .about-hero__card h1 .jt-text-reveal__inner {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-text-fill-color: #FFFFFF;
+  color: #FFFFFF;
+  text-shadow: 0 2px 18px rgba(120, 52, 0, 0.22);
+}
+
+/* Lead paragraph → high-contrast white. */
+.jt-page--about .about-hero-animated .page-hero__content p.text-large {
+  color: rgba(255, 255, 255, 0.94);
+}
+
+/* Badge → frosted white glass on orange (was orange-tint on cream). */
+.jt-page--about .page-hero.about-hero-animated .about-badge-animated {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(120, 52, 0, 0.18);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.jt-page--about .page-hero.about-hero-animated .about-badge-animated .badge-pulse-dot {
+  background: #FFFFFF;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+}
+
+/* Image frame: white border already reads well on orange; deepen the shadow a
+   touch so it lifts off the vivid background. */
+.jt-page--about .about-hero-animated .about-hero__image-frame {
+  box-shadow: 0 26px 60px rgba(90, 40, 0, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+/* ---- ABOUT — mid feature section: ORANGE → DARK GREEN for section rhythm ----
+   Text + pill are already white / dark-green, so they stay perfectly legible. */
+.jt-page--about .section-orange-feature.about-feature-animated.jt-section {
+  background: linear-gradient(180deg, #16532B 0%, #0F381E 100%);
+}
+
+/* =========================== CHAMPION — ORANGE HERO ======================== */
+.jt-page--champion .champion-hero {
+  background: radial-gradient(125% 125% at 78% 0%, #F79A3C 0%, #F08121 46%, #E86F10 100%);
+}
+
+/* Title → white; the trailing dot becomes dark-green for a crisp brand accent. */
+.jt-page--champion .champion-hero .champion-hero__title {
+  color: #FFFFFF;
+  text-shadow: 0 2px 20px rgba(120, 52, 0, 0.22);
+}
+.jt-page--champion .champion-hero .champion-hero__dot {
+  color: #0F381E;
+}
+
+/* Lead → white. */
+.jt-page--champion .champion-hero .champion-hero__lead {
+  color: rgba(255, 255, 255, 0.94);
+}
+
+/* Badge → frosted white glass. */
+.jt-page--champion .champion-hero .champion-badge {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #FFFFFF;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.jt-page--champion .champion-hero .champion-badge__dot {
+  background: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.22);
+}
+
+/* Benefit chips → solid white pills with dark text so they stay readable. */
+.jt-page--champion .champion-hero .champion-hero__chip {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  color: #0F381E;
+  box-shadow: 0 4px 12px rgba(120, 52, 0, 0.14);
+}
+
+/* Primary CTA on the orange hero → DARK GREEN so it doesn't melt into orange. */
+.jt-page--champion .champion-hero .champion-cta.btn-primary {
+  background: #0F381E;
+  border-color: #0F381E;
+  color: #FFFFFF;
+  box-shadow: 0 10px 26px rgba(10, 40, 20, 0.32);
+}
+.jt-page--champion .champion-hero .champion-cta.btn-primary:hover {
+  background: #0A2A16;
+  border-color: #0A2A16;
+}
+
+/* Scroll hint → readable white on orange. */
+.jt-page--champion .champion-hero .champion-scroll-hint {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* Floating orange slices sit on an orange field now — a soft drop-shadow keeps
+   them clearly visible without altering the artwork. */
+.jt-page--champion .champion-hero .champion-orbit__slice {
+  filter: drop-shadow(0 8px 16px rgba(90, 40, 0, 0.26));
+}
+
+/* --------------------------- RESPONSIVE SAFETY ---------------------------- */
+@media (max-width: 640px) {
+  /* Keep the orange heroes visually strong and text readable on small screens;
+     no layout changes — existing stacking already places art clear of text. */
+  .jt-page--about .about-hero-animated .about-hero__card h1,
+  .jt-page--champion .champion-hero .champion-hero__title {
+    text-shadow: 0 2px 14px rgba(120, 52, 0, 0.26);
+  }
 }
