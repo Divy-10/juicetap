@@ -36,6 +36,13 @@
 
 var CERT_LOG_SHEET = 'Certificates';
 
+function doGet() {
+  return ContentService
+    .createTextOutput("JuiceTap Certificate API is running.")
+    .setMimeType(ContentService.MimeType.TEXT);
+}
+
+
 function doPost(e) {
   try {
     if (!e || !e.postData || !e.postData.contents) {
@@ -64,8 +71,14 @@ function doPost(e) {
     var bytes = Utilities.base64Decode(pdfB64);
     var blob = Utilities.newBlob(bytes, 'application/pdf', filename);
 
-    var subject = 'Your JuiceTap Champion Certificate 🍊';
+    var subject = 'Your JuiceTap Champion Certificate 🍊🏆';
     var htmlBody = _certificateEmailHtml(name, city);
+
+    var logoBase64Raw = 'iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAYAAAA8AXHiAAA...';
+
+    // Decode inline logo blob for email client CID embedding
+    var logoBytes = Utilities.base64Decode(logoBase64Raw);
+    var logoBlob = Utilities.newBlob(logoBytes, 'image/png', 'logo.png').setName('logo.png');
 
     MailApp.sendEmail({
       to: email,
@@ -73,6 +86,9 @@ function doPost(e) {
       htmlBody: htmlBody,
       name: 'JuiceTap',
       attachments: [blob],
+      inlineImages: {
+        juicetapLogo: logoBlob
+      }
     });
 
     _logCertificate(name, email, city);
@@ -85,34 +101,87 @@ function doPost(e) {
 
 function _certificateEmailHtml(name, city) {
   var safeName = _escape(name);
-  var line = city ? (_escape(city) + ' &middot; ') : '';
+  var safeCity = _escape(city);
+  var locationLine = safeCity ? '<div style="font-size:14px;color:#F08121;font-weight:700;letter-spacing:0.5px;margin-bottom:16px;text-transform:uppercase;">📍 CHAMPION FROM ' + safeCity + '</div>' : '';
+
   return (
-    '<div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:0 auto;' +
-    'background:#FFF9F2;border-radius:16px;overflow:hidden;border:1px solid #F0E4D6">' +
-      '<div style="background:linear-gradient(135deg,#FF9B42,#D46A10);padding:28px 24px;text-align:center">' +
-        '<div style="font-size:26px;font-weight:800;color:#ffffff;letter-spacing:-0.5px">JuiceTap</div>' +
-        '<div style="font-size:13px;color:#FFE9D3;margin-top:4px;letter-spacing:1px">FRESH JUICE. ONE TAP AWAY.</div>' +
-      '</div>' +
-      '<div style="padding:30px 26px;color:#1C2B20">' +
-        '<h1 style="font-size:22px;color:#0F381E;margin:0 0 10px">Congratulations, Champion! 🍊</h1>' +
-        '<p style="font-size:15px;line-height:1.6;margin:0 0 14px">Hi ' + safeName + ',</p>' +
-        '<p style="font-size:15px;line-height:1.6;margin:0 0 14px">' +
-          'You’re officially a <strong>JuiceTap Champion</strong>. Your personalised ' +
-          'certificate is attached to this email as a PDF — print it, share it, or keep it as ' +
-          'a badge of fresh, natural goodness.' +
-        '</p>' +
-        '<p style="font-size:15px;line-height:1.6;margin:0 0 20px">' + line +
-          'Thanks for meeting Champion and discovering why JuiceTap is different: 100% natural, ' +
-          'no added sugar, no preservatives, hygienic, and fresh in under 60 seconds.' +
-        '</p>' +
-        '<a href="https://juicetap.in/meet-champion" ' +
-          'style="display:inline-block;background:#F08121;color:#fff;text-decoration:none;' +
-          'font-weight:700;padding:12px 22px;border-radius:999px;font-size:14px">Find a JuiceTap near you →</a>' +
-      '</div>' +
-      '<div style="padding:16px 24px;background:#0F381E;color:#C9D6CD;font-size:12px;text-align:center">' +
-        'JUICETAP GLOBAL PVT. LTD. &middot; support@juicetap.in' +
-      '</div>' +
-    '</div>'
+    '<!DOCTYPE html>' +
+    '<html lang="en">' +
+    '<head>' +
+    '<meta charset="UTF-8">' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+    '<title>Your JuiceTap Champion Certificate</title>' +
+    '</head>' +
+    '<body style="margin:0;padding:0;background-color:#FFFDF9;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;">' +
+    '<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color:#FFFDF9;padding:30px 10px 40px;">' +
+    '<tr>' +
+    '<td align="center">' +
+    '<!-- Main Container -->' +
+    '<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width:580px;background-color:#ffffff;border-radius:24px;overflow:hidden;border:1px solid #F3E8D8;box-shadow:0 12px 36px rgba(240,129,33,0.08);">' +
+
+    '<!-- Header -->' +
+    '<tr>' +
+    '<td align="center" style="background-color:#ffffff;padding:28px 24px 20px;border-bottom:3px solid #F08121;">' +
+    '<img src="cid:juicetapLogo" alt="JuiceTap" width="180" style="display:block;width:180px;max-width:100%;height:auto;border:0;outline:none;margin:0 auto;" />' +
+    '<div style="font-size:11px;font-weight:800;color:#F08121;margin-top:10px;letter-spacing:2px;text-transform:uppercase;">FRESH JUICE. ONE TAP AWAY.</div>' +
+    '</td>' +
+    '</tr>' +
+
+    '<!-- Body Content -->' +
+    '<tr>' +
+    '<td style="padding:40px 32px 28px;color:#1C2B20;">' +
+    '<h1 style="font-size:24px;font-weight:800;color:#0F381E;margin:0 0 8px;line-height:1.3;">Congratulations, ' + safeName + '! 🍊🏆</h1>' +
+    '<p style="font-size:16px;line-height:1.6;color:#3A4A3F;margin:0 0 20px;font-weight:500;">You are officially a <strong style="color:#F08121;">JuiceTap Champion</strong>.</p>' +
+
+    locationLine +
+
+    '<p style="font-size:15px;line-height:1.65;color:#55665A;margin:0 0 28px;">' +
+    'Congratulations on completing the Champion journey! You&rsquo;ve officially discovered what makes JuiceTap fresh, natural, hygienic, and different.' +
+    '</p>' +
+
+    '<!-- Certificate Highlight Box -->' +
+    '<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color:#FFF7EE;border-radius:16px;border:1.5px dashed #F5C69D;margin-bottom:32px;">' +
+    '<tr>' +
+    '<td style="padding:22px 24px;text-align:center;">' +
+    '<div style="font-size:28px;margin-bottom:6px;">🏆</div>' +
+    '<div style="font-size:15px;font-weight:800;color:#D46A10;letter-spacing:0.5px;margin-bottom:4px;text-transform:uppercase;">YOUR CHAMPION CERTIFICATE</div>' +
+    '<div style="font-size:14px;color:#665445;line-height:1.5;">Your personalized certificate is attached to this email as a PDF.</div>' +
+    '</td>' +
+    '</tr>' +
+    '</table>' +
+
+    '<!-- Personal Note -->' +
+    '<p style="font-size:15px;line-height:1.6;color:#3A4A3F;margin:0 0 28px;">' +
+    'Keep spreading the goodness! 🍊<br>' +
+    '<strong style="color:#0F381E;">— Team JuiceTap</strong>' +
+    '</p>' +
+
+    '<!-- CTA Button -->' +
+    '<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:12px;">' +
+    '<tr>' +
+    '<td align="center">' +
+    '<a href="https://juicetap.in/meet-champion" target="_blank" style="display:inline-block;background-color:#F08121;color:#ffffff;text-decoration:none;font-size:15px;font-weight:700;padding:15px 32px;border-radius:50px;box-shadow:0 6px 18px rgba(240,129,33,0.3);letter-spacing:0.2px;">Find a JuiceTap Near You &rarr;</a>' +
+    '</td>' +
+    '</tr>' +
+    '</table>' +
+
+    '</td>' +
+    '</tr>' +
+
+    '<!-- Footer -->' +
+    '<tr>' +
+    '<td style="background-color:#0F381E;padding:24px 32px;text-align:center;color:#BCCBC0;font-size:13px;line-height:1.6;border-top:1px solid #164C2A;">' +
+    '<div style="font-weight:700;color:#FFFFFF;margin-bottom:4px;letter-spacing:0.5px;">JUICETAP GLOBAL PVT. LTD.</div>' +
+    '<div>Support: <a href="mailto:support@juicetap.in" style="color:#FFB775;text-decoration:none;font-weight:600;">support@juicetap.in</a></div>' +
+    '</td>' +
+    '</tr>' +
+
+    '</table>' +
+    '</td>' +
+    '</tr>' +
+    '</table>' +
+    '</body>' +
+    '</html>'
   );
 }
 

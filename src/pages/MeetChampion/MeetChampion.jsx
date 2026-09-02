@@ -16,6 +16,7 @@
    ================================================================ */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import SEO from '../../components/SEO';
 import PageShell from '../../components/PageShell/PageShell';
@@ -41,18 +42,22 @@ const BENEFITS = [
   {
     id: 'natural',
     num: '01',
-    title: '100% Natural',
-    speech: 'Nothing complicated. Just the natural goodness of oranges.',
-    detail: 'Pressed from premium, naturally ripened oranges — no concentrates, no artificial flavours. Pure fruit, exactly as nature intended.',
+    title: 'Natural',
+    statement: 'I’m 100% Natural.',
+    emoji: '🍊',
+    speech: 'I’m 100% natural — just the goodness of real oranges!',
+    detail: 'No concentrates. No artificial flavours. Just premium, naturally ripened oranges, pressed into every cup.',
     mascot: STAND_MASCOT,
     pose: 'point',
   },
   {
     id: 'sugar',
     num: '02',
-    title: 'No Added Sugar',
-    speech: 'Nature already knows how to make oranges taste amazing.',
-    detail: 'Only the natural sweetness of the fruit. Zero added sugar, zero artificial sweeteners — sweetness that comes straight from the orange.',
+    title: 'No Sugar',
+    statement: 'I Have No Added Sugar.',
+    emoji: '🚫',
+    speech: 'I don’t need added sugar. The natural sweetness of oranges is enough!',
+    detail: 'Zero added sugar, zero artificial sweeteners — the sweetness comes straight from the fruit.',
     mascot: waveMascot,
     pose: 'thumbs',
   },
@@ -60,37 +65,43 @@ const BENEFITS = [
     id: 'preservatives',
     num: '03',
     title: 'No Preservatives',
-    speech: "Fresh juice doesn't need unnecessary extras.",
-    detail: 'Squeezed and served on the spot, so there is nothing to preserve. Every cup is clean, fresh and free of added chemicals.',
+    statement: 'I Have No Preservatives.',
+    emoji: '✨',
+    speech: 'I stay simple and fresh — no preservatives added!',
+    detail: 'Squeezed and served on the spot, so there’s nothing to preserve. Nothing unnecessary. Just freshness.',
     mascot: STAND_MASCOT,
     pose: 'think',
   },
   {
     id: 'hygienic',
     num: '04',
-    title: 'Hygienic by Design',
-    speech: 'Freshness matters. So does hygiene.',
-    detail: 'A fully automated, contactless machine handles selection, squeezing and sealing — minimal human contact for maximum food safety.',
+    title: 'Hygienic',
+    statement: 'I’m Fully Hygienic.',
+    emoji: '🧼',
+    speech: 'I’m fully hygienic — freshness and hygiene go hand in hand!',
+    detail: 'A fully automated, contactless machine handles every step — from orange to sealed cup, untouched by hand.',
     mascot: STAND_MASCOT,
     pose: 'excited',
   },
   {
     id: 'seconds',
     num: '05',
-    title: 'Fresh in Under 60 Seconds',
-    speech: 'Ready? Watch how fast fresh juice happens.',
-    detail: 'From whole orange to a sealed, fresh cup in under a minute. Tap, pay and enjoy — no queues, no waiting.',
+    title: 'Under 60 Sec',
+    statement: 'I’m Ready in Under 60 Seconds!',
+    emoji: '⚡',
+    speech: 'I’m ready in under 60 seconds. Watch this!',
+    detail: 'From whole orange to a fresh, sealed cup in under a minute. Told you — fresh juice, incredibly fast.',
     mascot: waveMascot,
     pose: 'celebrate',
   },
 ];
 
 const PROMISE_ITEMS = [
-  { icon: '🍊', label: '100% Natural', note: 'Real oranges, nothing else.' },
-  { icon: '🚫', label: 'No Added Sugar', note: 'Naturally sweet, always.' },
-  { icon: '✨', label: 'No Preservatives', note: 'Fresh, never chemical.' },
-  { icon: '🧼', label: 'Hygienic', note: 'Contactless & clean.' },
-  { icon: '⚡', label: 'Under 60 Seconds', note: 'Fresh, incredibly fast.' },
+  { icon: '🍊', label: 'I’m 100% Natural', note: 'Real oranges, nothing else.' },
+  { icon: '🚫', label: 'I Have No Added Sugar', note: 'Naturally sweet, always.' },
+  { icon: '✨', label: 'I Have No Preservatives', note: 'Fresh, never chemical.' },
+  { icon: '🧼', label: 'I’m Fully Hygienic', note: 'Contactless & clean.' },
+  { icon: '⚡', label: 'I’m Under 60 Seconds', note: 'Fresh, incredibly fast.' },
 ];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -155,12 +166,12 @@ function ChampionHero({ reduced, onDiscover }) {
               Meet Champion<span className="champion-hero__dot">.</span>
             </Reveal>
             <Reveal as="p" variant="up" delay={0.12} className="champion-hero__lead">
-              The little expert behind your fresh orange juice.
+              Your little guide to fresh, natural orange goodness.
             </Reveal>
 
             <Reveal variant="up" delay={0.2} className="champion-hero__actions">
               <button type="button" className="btn btn-primary btn-lg champion-cta" onClick={onDiscover}>
-                Let&rsquo;s Discover <span className="btn-arrow">→</span>
+                Let&rsquo;s Find Out <span className="btn-arrow">→</span>
               </button>
             </Reveal>
 
@@ -174,7 +185,7 @@ function ChampionHero({ reduced, onDiscover }) {
                   duration={5 + i * 0.4}
                   delay={i * 0.3}
                 >
-                  {b.title.replace('Fresh in ', '')}
+                  {b.emoji} {b.title}
                 </FloatingElement>
               ))}
             </Reveal>
@@ -207,9 +218,9 @@ function ChampionHero({ reduced, onDiscover }) {
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ duration: 0.45, ease: EASE }}
                   >
-                    Hey! I&rsquo;m Champion <span aria-hidden="true">🍊</span>
+                    Hey! I&rsquo;m Champion! <span aria-hidden="true">🍊</span>
                     <br />
-                    Want to know what makes JuiceTap different?
+                    Want to know what makes me different?
                     <span className="champion-bubble__tail" />
                   </motion.div>
                 )}
@@ -255,9 +266,9 @@ function BenefitStory({ reduced }) {
     <section className="champion-story" id="benefits">
       <div className="champion-story__intro container">
         <Reveal variant="up" className="champion-section-head">
-          <span className="champion-eyebrow">CHAMPION EXPLAINS</span>
-          <h2 className="champion-h2">Five reasons it&rsquo;s just better</h2>
-          <p className="champion-sub">Scroll on — Champion reveals each one as its own little moment.</p>
+          <span className="champion-eyebrow">CHAMPION SPEAKS</span>
+          <h2 className="champion-h2">Let me tell you about myself</h2>
+          <p className="champion-sub">Scroll on — I&rsquo;ll walk you through what makes me, me. 🍊</p>
         </Reveal>
       </div>
 
@@ -314,7 +325,9 @@ function BenefitStory({ reduced }) {
             >
               <Reveal variant="up" className="story-scene__inner">
                 <span className="story-scene__num">{item.num}</span>
-                <h3 className="story-scene__title">{item.title}</h3>
+                <h3 className="story-scene__title">
+                  {item.statement} <span className="story-scene__emoji" aria-hidden="true">{item.emoji}</span>
+                </h3>
                 <p className="story-scene__detail">{item.detail}</p>
                 <p className="story-scene__quote">
                   <span className="story-scene__quote-label">Champion says</span>
@@ -335,7 +348,7 @@ function ProgressRail({ active }) {
       {BENEFITS.map((b, i) => (
         <div key={b.id} className={`champion-rail__step ${i === active ? 'is-active' : ''} ${i < active ? 'is-done' : ''}`}>
           <span className="champion-rail__dot">{b.num}</span>
-          <span className="champion-rail__label">{b.title.replace('Fresh in ', '').replace(' by Design', '')}</span>
+          <span className="champion-rail__label">{b.title}</span>
           {i < BENEFITS.length - 1 && <span className="champion-rail__line" />}
         </div>
       ))}
@@ -358,6 +371,7 @@ function SceneFX({ id, reduced }) {
         <div className={`scenefx__orange ${reduced ? '' : 'is-spin'}`}>
           <OrangeSliceSVG />
         </div>
+        <span className="scenefx__glass"><span className={`scenefx__juice ${reduced ? 'is-full' : 'is-fill'}`} /></span>
         {!reduced && [...Array(6)].map((_, i) => <span key={i} className={`scenefx__leaf scenefx__leaf--${i + 1}`} />)}
       </motion.div>
     );
@@ -369,6 +383,7 @@ function SceneFX({ id, reduced }) {
         {[0, 1, 2].map((i) => (
           <span key={i} className={`scenefx__cube scenefx__cube--${i + 1} ${reduced ? '' : 'is-reject'}`} />
         ))}
+        <span className="scenefx__stamp scenefx__stamp--sugar">NO ADDED SUGAR</span>
       </motion.div>
     );
   }
@@ -390,6 +405,7 @@ function SceneFX({ id, reduced }) {
           </svg>
         </span>
         {!reduced && [...Array(4)].map((_, i) => <span key={i} className={`scenefx__spark scenefx__spark--${i + 1}`} />)}
+        <span className="scenefx__stamp scenefx__stamp--clean">CLEAN ✓</span>
       </motion.div>
     );
   }
@@ -398,6 +414,7 @@ function SceneFX({ id, reduced }) {
     <motion.div className="scenefx scenefx--seconds" {...base}>
       <Countdown reduced={reduced} />
       {!reduced && [...Array(3)].map((_, i) => <span key={i} className={`scenefx__speed scenefx__speed--${i + 1}`} />)}
+      <span className="scenefx__glass scenefx__glass--sec"><span className={`scenefx__juice ${reduced ? 'is-full' : 'is-fill-fast'}`} /></span>
     </motion.div>
   );
 }
@@ -497,7 +514,7 @@ function ChampionsPromise({ reduced, onClaim }) {
         </div>
 
         <Reveal variant="up" delay={0.15} className="champion-promise__reward">
-          <p className="champion-promise__whisper">You know my secrets now&hellip;</p>
+          <p className="champion-promise__whisper">Now you know all my secrets&hellip;</p>
           <p className="champion-promise__ask">Ready to become a JuiceTap Champion?</p>
           <button type="button" className="btn btn-primary btn-lg champion-cta" onClick={onClaim}>
             Claim My Champion Certificate <span className="btn-arrow">→</span>
@@ -512,7 +529,7 @@ function ChampionsPromise({ reduced, onClaim }) {
    4 — CERTIFICATE (live preview + personalization + generation)
    ================================================================ */
 const initialForm = { name: '', email: '', city: '', consent: false };
-const GEN_STEPS = ['Preparing', 'Personalizing', 'Finalizing'];
+const GEN_STEPS = ['Personalizing', 'Adding Your Name', 'Finalizing', 'Ready!'];
 
 function CertificateSection({ reduced }) {
   const [form, setForm] = useState(initialForm);
@@ -522,7 +539,6 @@ function CertificateSection({ reduced }) {
   const [result, setResult] = useState(null); // { blob, previewUrl, name, emailed }
   const [serverError, setServerError] = useState('');
   const [livePreview, setLivePreview] = useState('');
-  const [resent, setResent] = useState(false);
   const lastKeyRef = useRef('');
   const emailConfigured = isEmailConfigured();
 
@@ -582,20 +598,23 @@ function CertificateSection({ reduced }) {
     setStatus('loading');
     setServerError('');
     setGenStep(0);
-    const stepTimer = setInterval(() => setGenStep((s) => Math.min(s + 1, GEN_STEPS.length - 1)), 620);
-    const minShow = new Promise((res) => setTimeout(res, 1700));
+    const stepTimer = setInterval(() => setGenStep((s) => Math.min(s + 1, GEN_STEPS.length - 1)), 560);
+    const minShow = new Promise((res) => setTimeout(res, 2000));
 
     try {
       const build = (async () => {
         const { blob, jpegBase64 } = await buildCertificatePdf({ name, city });
         const previewUrl = `data:image/jpeg;base64,${jpegBase64}`;
         const pdfBase64 = await blobToBase64(blob);
+        // emailed is true ONLY when the backend confirms delivery.
         let emailed = false;
+        let emailAttempted = false;
         if (emailConfigured) {
+          emailAttempted = true;
           const res = await sendCertificateEmail({ name, email, city, pdfBase64 });
-          emailed = res.ok === true;
+          emailed = res.delivered === true;
         }
-        return { blob, previewUrl, name, email, city, pdfBase64, emailed };
+        return { blob, previewUrl, name, email, city, pdfBase64, emailed, emailAttempted };
       })();
 
       const [payload] = await Promise.all([build, minShow]);
@@ -611,24 +630,11 @@ function CertificateSection({ reduced }) {
     }
   };
 
-  const resendEmail = async () => {
-    if (!result || !emailConfigured) return;
-    setResent(false);
-    const res = await sendCertificateEmail({
-      name: result.name,
-      email: result.email,
-      city: result.city,
-      pdfBase64: result.pdfBase64,
-    });
-    if (res.ok) setResent(true);
-  };
-
   const reset = () => {
     setForm(initialForm);
     setErrors({});
     setResult(null);
     setStatus('idle');
-    setResent(false);
     lastKeyRef.current = '';
   };
 
@@ -692,7 +698,7 @@ function CertificateSection({ reduced }) {
                       draggable="false"
                     />
                   </div>
-                  <p className="champion-gen__say">One moment&hellip; I&rsquo;m preparing your certificate!</p>
+                  <p className="champion-gen__say">Give me a moment&hellip; I&rsquo;m preparing your certificate!</p>
                   <ol className="champion-gen__steps">
                     {GEN_STEPS.map((s, i) => (
                       <li key={s} className={`champion-gen__step ${i <= genStep ? 'is-active' : ''} ${i < genStep ? 'is-done' : ''}`}>
@@ -720,11 +726,13 @@ function CertificateSection({ reduced }) {
                       draggable="false"
                     />
                   </div>
-                  <h3 className="champion-success__title">You&rsquo;re a JuiceTap Champion! 🍊</h3>
+                  <h3 className="champion-success__title">You&rsquo;re Officially a JuiceTap Champion! 🍊🏆</h3>
                   <p className="champion-success__text">
-                    {result?.emailed || emailConfigured
-                      ? 'Your personalised certificate has been sent to your email.'
-                      : 'Your certificate has been downloaded to your device.'}
+                    {result?.emailed
+                      ? 'Your certificate is ready, and a copy has been sent to your email.'
+                      : result?.emailAttempted
+                        ? 'Your certificate is ready, but we couldn’t send the email right now — download it below.'
+                        : 'Your certificate is ready and has been downloaded to your device.'}
                   </p>
                   <div className="champion-success__actions">
                     <button
@@ -736,11 +744,7 @@ function CertificateSection({ reduced }) {
                     >
                       Download Certificate <span className="btn-arrow">↓</span>
                     </button>
-                    {emailConfigured && (
-                      <button type="button" className="btn btn-secondary btn-lg" onClick={resendEmail}>
-                        {resent ? 'Sent again ✓' : 'Send Again'}
-                      </button>
-                    )}
+                    <Link to="/" className="btn btn-secondary btn-lg">Explore JuiceTap</Link>
                     <button type="button" className="btn btn-ghost champion-success__restart" onClick={reset}>
                       Create another
                     </button>

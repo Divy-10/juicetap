@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import SEO from '../../components/SEO';
 import Button from '../../components/Button/Button';
@@ -182,11 +183,24 @@ const IS_APPLE_WEBKIT = (() => {
 })();
 
 export default function Home() {
+  const navigate = useNavigate();
   const [locations, setLocations] = useState(LOCATIONS);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [activeStep, setActiveStep] = useState(0);
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth <= 767);
   const parallaxRef = useRef(null);
+
+  // Hero mascot → Meet Champion. A brief tap-feedback (framer-motion whileTap)
+  // plays, then we route via React Router — quick, no heavy page transition.
+  const goToChampion = () => {
+    window.setTimeout(() => navigate('/meet-champion'), 150);
+  };
+  const handleMascotKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      goToChampion();
+    }
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -335,7 +349,12 @@ export default function Home() {
                   <motion.div className="hero__glass-parallax-wrap">
                     <div className="hero__pedestal" />
                     <motion.div
-                      className="hero__glass-container"
+                      className="hero__glass-container hero__mascot-cta hero__mascot-cta--mobile"
+                      role="button"
+                      tabIndex={0}
+                      aria-label="Meet Champion, the JuiceTap mascot"
+                      onClick={goToChampion}
+                      onKeyDown={handleMascotKeyDown}
                       initial={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
                       animate={{
                         opacity: 1,
@@ -343,6 +362,7 @@ export default function Home() {
                         y: [0, -6, 0],
                         rotate: [2, -2, 2]
                       }}
+                      whileTap={{ scale: 0.95 }}
                       transition={{
                         opacity: { duration: 0.3, ease: "easeOut" },
                         scale: { duration: 4.5, repeat: Infinity, ease: "easeInOut" },
@@ -350,6 +370,7 @@ export default function Home() {
                         rotate: { duration: 5.5, repeat: Infinity, ease: "easeInOut" }
                       }}
                     >
+                      <span className="hero__mascot-aura" aria-hidden="true" />
                       {IS_APPLE_WEBKIT ? (
                         <img
                           src="/video/hero-mascot.png"
@@ -367,6 +388,7 @@ export default function Home() {
                           className="hero__glass-image hero__mascot-image hero__video"
                         />
                       )}
+                      <span className="hero__mascot-tip" aria-hidden="true">Meet Champion 👋</span>
                     </motion.div>
                   </motion.div>
                 </div>
@@ -440,7 +462,12 @@ export default function Home() {
 
                 {/* Mascot Container with Creative Floating & Hover Physics */}
                 <motion.div
-                  className="hero__glass-container"
+                  className="hero__glass-container hero__mascot-cta hero__mascot-cta--desktop"
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Meet Champion, the JuiceTap mascot"
+                  onClick={goToChampion}
+                  onKeyDown={handleMascotKeyDown}
                   initial={isMobile ? { opacity: 1, y: 0, scale: 1, rotate: 0 } : { opacity: 0, y: 100, scale: 0.8, rotate: -6 }}
                   animate={{
                     opacity: 1,
@@ -461,6 +488,7 @@ export default function Home() {
                     rotate: { duration: 5.5, repeat: Infinity, ease: "easeInOut" }
                   }}
                 >
+                  <span className="hero__mascot-aura" aria-hidden="true" />
                   {IS_APPLE_WEBKIT ? (
                     <img
                       src="/video/hero-mascot.png"
@@ -478,6 +506,7 @@ export default function Home() {
                       className="hero__glass-image hero__mascot-image hero__video"
                     />
                   )}
+                  <span className="hero__mascot-tip" aria-hidden="true">Meet Champion 👋</span>
                 </motion.div>
               </motion.div>
             </div>
