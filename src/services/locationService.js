@@ -231,7 +231,7 @@ function parseCsv(csvText) {
         pincode: getVal('pincode') || '',
         latitude: parseFloat(getVal('latitude')) || null,
         longitude: parseFloat(getVal('longitude')) || null,
-        phone: getVal('phone') ? (getVal('phone').startsWith('+') ? getVal('phone') : '+' + getVal('phone')) : '+918511533004',
+        phone: getVal('phone') ? getVal('phone') : '18002033004',
         timings: getVal('timings') || '10 AM - 10 PM',
       });
     }

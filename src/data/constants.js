@@ -7,9 +7,9 @@ export const SITE_TAGLINE = 'Fresh Juice. One Tap Away.';
 export const SITE_URL = 'https://juicetap.in';
 
 export const CONTACT = {
-  phone: '+91 85115 33004',
-  phoneRaw: '+918511533004',
-  phoneTel: 'tel:+918511533004',
+  phone: '1800 203 3004',
+  phoneRaw: '18002033004',
+  phoneTel: 'tel:18002033004',
   whatsapp: '918511533004',
   whatsappUrl: 'https://wa.me/918511533004',
   email: 'support@juicetap.in',

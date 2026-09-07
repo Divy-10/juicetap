@@ -107,10 +107,10 @@ export default function Contact() {
                     <PhoneIcon size={24} />
                   </div>
                   <div>
-                    <h3>Phone</h3>
+                    <h3>Phone (Toll-Free)</h3>
                     <p>
-                      <a href={CONTACT.phoneTel} className="contact-link" aria-label="Call JuiceTap">
-                        CALL NOW
+                      <a href={CONTACT.phoneTel} className="contact-link" aria-label="Call JuiceTap Toll-Free">
+                        {CONTACT.phone}
                       </a>
                     </p>
                   </div>

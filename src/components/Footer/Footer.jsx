@@ -16,9 +16,9 @@ export default function Footer() {
             </Link>
             <p className="footer__tagline">{SITE_TAGLINE}</p>
             <div className="footer__contact-info">
-              <a href={CONTACT.phoneTel} className="footer__contact-link" aria-label="Call JuiceTap">
+              <a href={CONTACT.phoneTel} className="footer__contact-link" aria-label="Call JuiceTap Toll-Free">
                 <PhoneIcon size={16} />
-                <span>CALL NOW</span>
+                <span>{CONTACT.phone}</span>
               </a>
               <a href={CONTACT.emailLink} className="footer__contact-link" aria-label="Email JuiceTap">
                 <EmailIcon size={16} />
