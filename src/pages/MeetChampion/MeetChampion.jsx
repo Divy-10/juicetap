@@ -28,7 +28,7 @@ import {
   downloadBlob,
   slugifyName,
 } from './certificate';
-import { sendCertificateEmail, isEmailConfigured } from '../../services/certificateService';
+import { sendCertificateByEmail, isEmailConfigured } from '../../services/certificateService';
 
 import waveMascot from '../../assets/mascot-hero.png';
 
@@ -606,19 +606,42 @@ function CertificateSection({ reduced }) {
         const { blob, jpegBase64 } = await buildCertificatePdf({ name, city });
         const previewUrl = `data:image/jpeg;base64,${jpegBase64}`;
         const pdfBase64 = await blobToBase64(blob);
-        // emailed is true ONLY when the backend confirms delivery.
+
         let emailed = false;
         let emailAttempted = false;
+        let emailErrorMessage = '';
+
         if (emailConfigured) {
           emailAttempted = true;
-          const res = await sendCertificateEmail({ name, email, city, pdfBase64 });
-          emailed = res.delivered === true;
+          console.log('[Certificate] Attempting email send...');
+          const res = await sendCertificateByEmail({
+            email,
+            name,
+            city,
+            certificatePdfBase64: pdfBase64,
+            fileName: `JuiceTap-Champion-Certificate-${slugifyName(name)}.pdf`,
+          });
+          console.log('[Certificate] API response:', res);
+          if (res.success) {
+            emailed = true;
+          } else {
+            emailed = false;
+            emailErrorMessage = res.error || res.message || 'Failed to send certificate email';
+          }
         }
-        return { blob, previewUrl, name, email, city, pdfBase64, emailed, emailAttempted };
+
+        return { blob, previewUrl, name, email, city, pdfBase64, emailed, emailAttempted, emailErrorMessage };
       })();
 
       const [payload] = await Promise.all([build, minShow]);
       clearInterval(stepTimer);
+
+      if (payload.emailAttempted && !payload.emailed) {
+        setServerError(payload.emailErrorMessage || 'Certificate was generated, but we couldn’t send the email. Please try again.');
+        setStatus('error');
+        return;
+      }
+
       lastKeyRef.current = key;
       setResult(payload);
       setStatus('success');

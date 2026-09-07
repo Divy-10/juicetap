@@ -54,15 +54,7 @@ export default function Machine() {
       <section className="page-hero machine-hero">
         <div className="jt-tech-grid" />
 
-        {/* A single scan line sweeping the hero, like a machine
-            calibrating itself. One transform, runs off the compositor. */}
-        {!reduced && (
-          <motion.div
-            className="machine-hero__scan"
-            animate={{ x: ['-30%', '130%'] }}
-            transition={{ repeat: Infinity, duration: 7.5, ease: 'easeInOut', repeatDelay: 1.5 }}
-          />
-        )}
+
 
 
 
