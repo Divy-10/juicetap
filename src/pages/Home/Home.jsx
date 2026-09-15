@@ -1280,7 +1280,7 @@ export default function Home() {
               <span className="label">Connect With Us</span>
               <h2 className="font-serif" style={{ marginBottom: 'var(--space-md)' }}>Let's Talk Freshness.</h2>
               <p className="contact-cta__desc" style={{ marginBottom: 'var(--space-xl)' }}>
-                Have a question, interested in a franchise, or looking for a JuiceTap location? Reach out by filling the form below, and we will connect with you via WhatsApp.
+                Have a question, interested in a franchise, or looking for a JuiceTap location? Reach out by filling the form below, and our team will get back to you.
               </p>
 
               <ContactForm />

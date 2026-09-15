@@ -153,7 +153,7 @@ export default function Contact() {
             <Reveal className="contact-form-container" variant="right" delay={0.12} distance={34}>
               <div className="contact-form-card jt-card jt-card--accent">
                 <h2>Send a Message</h2>
-                <p>Fill out the form below and we will get back to you via WhatsApp.</p>
+                <p>Fill out the form below and we will get back to you shortly.</p>
                 <ContactForm />
               </div>
             </Reveal>

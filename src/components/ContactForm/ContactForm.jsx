@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { getWhatsAppUrl } from '../../data/constants';
 import Button from '../Button/Button';
-import { CheckIcon, WhatsAppIcon } from '../Icons/Icons';
+import { CheckIcon } from '../Icons/Icons';
 
 const ENQUIRY_TYPES = [
   'General Enquiry',
@@ -12,6 +11,8 @@ const ENQUIRY_TYPES = [
   'Other',
 ];
 
+const APPS_SCRIPT_URL = import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL || '';
+
 export default function ContactForm() {
   const [form, setForm] = useState({
     name: '',
@@ -19,25 +20,43 @@ export default function ContactForm() {
     phone: '',
     enquiryType: '',
     message: '',
+    website_url: '', // Honeypot field (hidden)
   });
   const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState('idle'); // 'idle' | 'submitting' | 'success' | 'error'
 
   const validate = () => {
     const errs = {};
-    if (!form.name.trim()) errs.name = 'Name is required';
+    if (!form.name.trim()) {
+      errs.name = 'Name is required';
+    } else if (form.name.trim().length > 100) {
+      errs.name = 'Name must be under 100 characters';
+    }
+
     if (!form.email.trim()) {
       errs.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      errs.email = 'Enter a valid email';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      errs.email = 'Enter a valid email address';
+    } else if (form.email.trim().length > 120) {
+      errs.email = 'Email must be under 120 characters';
     }
+
     if (!form.phone.trim()) {
       errs.phone = 'Phone number is required';
     } else if (!/^[+]?[\d\s-]{8,15}$/.test(form.phone.replace(/\s/g, ''))) {
       errs.phone = 'Enter a valid phone number';
     }
-    if (!form.enquiryType) errs.enquiryType = 'Select an enquiry type';
-    if (!form.message.trim()) errs.message = 'Message is required';
+
+    if (!form.enquiryType) {
+      errs.enquiryType = 'Select an enquiry type';
+    }
+
+    if (!form.message.trim()) {
+      errs.message = 'Message is required';
+    } else if (form.message.trim().length > 2000) {
+      errs.message = 'Message must be under 2000 characters';
+    }
+
     return errs;
   };
 
@@ -49,7 +68,7 @@ export default function ContactForm() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length > 0) {
@@ -57,25 +76,51 @@ export default function ContactForm() {
       return;
     }
 
-    const whatsappMessage = `Hi JuiceTap Team,\n\nName: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\nEnquiry Type: ${form.enquiryType}\n\nMessage:\n${form.message}`;
+    setStatus('submitting');
 
-    window.open(getWhatsAppUrl(whatsappMessage), '_blank');
-    setSubmitted(true);
+    const submitData = {
+      name: form.name.trim(),
+      email: form.email.trim(),
+      phone: form.phone.trim(),
+      enquiryType: form.enquiryType,
+      message: form.message.trim(),
+      website_url: form.website_url, // Honeypot field
+    };
+
+    try {
+      if (APPS_SCRIPT_URL) {
+        // Post data to Google Apps Script Web App using no-cors / text payload for full cross-domain compatibility
+        await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8',
+          },
+          body: JSON.stringify(submitData),
+        });
+      }
+      // Since Google Apps Script Web App redirects or uses opaque no-cors response in browsers,
+      // a successful fetch call indicates completion.
+      setStatus('success');
+    } catch (err) {
+      console.error('Submission error:', err);
+      setStatus('error');
+    }
   };
 
-  if (submitted) {
+  if (status === 'success') {
     return (
       <div className="contact-form__success">
         <div className="contact-form__success-icon">
           <CheckIcon size={24} />
         </div>
-        <h3>Message Sent!</h3>
-        <p>Your enquiry has been forwarded to WhatsApp. Our team will respond shortly.</p>
+        <h3>Thank You!</h3>
+        <p>Thank you! Your message has been submitted successfully.</p>
         <Button
           variant="secondary"
           onClick={() => {
-            setSubmitted(false);
-            setForm({ name: '', email: '', phone: '', enquiryType: '', message: '' });
+            setStatus('idle');
+            setForm({ name: '', email: '', phone: '', enquiryType: '', message: '', website_url: '' });
           }}
         >
           Send Another Message
@@ -86,6 +131,32 @@ export default function ContactForm() {
 
   return (
     <form className="contact-form" onSubmit={handleSubmit} noValidate>
+      {status === 'error' && (
+        <div className="contact-form__error-alert" style={{
+          padding: '0.875rem 1rem',
+          backgroundColor: '#FEE2E2',
+          border: '1px solid #FCA5A5',
+          borderRadius: '8px',
+          color: '#991B1B',
+          fontSize: '0.875rem',
+          marginBottom: '1rem'
+        }}>
+          Something went wrong. Please try again.
+        </div>
+      )}
+
+      {/* Honeypot anti-spam field - invisible to humans */}
+      <div style={{ display: 'none', visibility: 'hidden' }} aria-hidden="true">
+        <input
+          type="text"
+          name="website_url"
+          tabIndex="-1"
+          value={form.website_url}
+          onChange={handleChange}
+          autoComplete="off"
+        />
+      </div>
+
       <div className="contact-form__group">
         <label htmlFor="cf-name" className="contact-form__label">Full Name *</label>
         <input
@@ -94,8 +165,10 @@ export default function ContactForm() {
           name="name"
           value={form.name}
           onChange={handleChange}
+          disabled={status === 'submitting'}
           className={`contact-form__input ${errors.name ? 'contact-form__input-error' : ''}`}
           placeholder="Your full name"
+          maxLength={100}
         />
         {errors.name && <span className="contact-form__error">{errors.name}</span>}
       </div>
@@ -109,8 +182,10 @@ export default function ContactForm() {
             name="email"
             value={form.email}
             onChange={handleChange}
+            disabled={status === 'submitting'}
             className={`contact-form__input ${errors.email ? 'contact-form__input-error' : ''}`}
             placeholder="your@email.com"
+            maxLength={120}
           />
           {errors.email && <span className="contact-form__error">{errors.email}</span>}
         </div>
@@ -123,8 +198,10 @@ export default function ContactForm() {
             name="phone"
             value={form.phone}
             onChange={handleChange}
+            disabled={status === 'submitting'}
             className={`contact-form__input ${errors.phone ? 'contact-form__input-error' : ''}`}
             placeholder="Enter your phone number"
+            maxLength={20}
           />
           {errors.phone && <span className="contact-form__error">{errors.phone}</span>}
         </div>
@@ -137,6 +214,7 @@ export default function ContactForm() {
           name="enquiryType"
           value={form.enquiryType}
           onChange={handleChange}
+          disabled={status === 'submitting'}
           className={`contact-form__input contact-form__select ${errors.enquiryType ? 'contact-form__input-error' : ''}`}
         >
           <option value="">Select enquiry type</option>
@@ -154,20 +232,24 @@ export default function ContactForm() {
           name="message"
           value={form.message}
           onChange={handleChange}
+          disabled={status === 'submitting'}
           className={`contact-form__input contact-form__textarea ${errors.message ? 'contact-form__input-error' : ''}`}
           placeholder="Tell us how we can help..."
           rows={5}
+          maxLength={2000}
         />
         {errors.message && <span className="contact-form__error">{errors.message}</span>}
       </div>
 
       <div className="contact-form__actions">
-        <Button type="submit" variant="whatsapp" size="lg" icon={<WhatsAppIcon size={18} />}>
-          Send via WhatsApp
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          disabled={status === 'submitting'}
+        >
+          {status === 'submitting' ? 'Submitting...' : 'Submit Message'}
         </Button>
-        <p className="contact-form__note">
-          Your message will be opened via WhatsApp for fast team response.
-        </p>
       </div>
     </form>
   );
