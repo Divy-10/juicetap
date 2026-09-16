@@ -14,7 +14,12 @@ export default function NotFound() {
 
   return (
     <PageShell name="notfound">
-      <SEO title="404 — Not Found" description="Looks like this juice took a wrong turn." path="/404" />
+      <SEO
+        title="404 — Page Not Found"
+        description="The page you are looking for does not exist or has been moved."
+        path="/404"
+        noindex={true}
+      />
 
       <section className="not-found section-cream jt-section">
         <CitrusGlow size={560} top="6%" left="-12%" color="rgba(240, 129, 33, 0.16)" duration={16} />

@@ -25,7 +25,11 @@ const SECTIONS = [
 export default function Terms() {
   return (
     <PageShell name="legal">
-      <SEO title="Terms & Conditions" description="Terms & Conditions for using JuiceTap services, vending machines, and website." path="/terms-and-conditions" />
+      <SEO
+        title="Terms & Conditions – JuiceTap Global"
+        description="Read the terms and conditions for using JuiceTap services, automatic vending machines, and online digital platforms."
+        path="/terms-and-conditions"
+      />
 
       <section className="page-hero legal-hero">
         <FloatingElement className="jt-hero-art legal-hero__peel" amplitude={10} rotate={-6} duration={11}>

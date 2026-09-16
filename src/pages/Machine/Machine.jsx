@@ -48,7 +48,28 @@ export default function Machine() {
 
   return (
     <PageShell name="machine">
-      <SEO title="Our Machine | Smart Automated Juice Vending Technology" description="Explore the JuiceTap smart vending machine — featuring automated squeezing, contactless operation, IoT monitoring, and food-grade engineering." path="/machine" />
+      <SEO
+        title="Automatic Orange Juice Machine – Smart Juice Vending"
+        description="Explore JuiceTap's fully automatic orange juice machine featuring smart IoT monitoring, contactless payment, food-grade automated squeezing, and hygienic cup sealing."
+        path="/machine"
+        ogImage="/assets/machine-showcase.png"
+        schemaData={{
+          '@context': 'https://schema.org',
+          '@type': 'Product',
+          name: 'JuiceTap Fully Automatic Orange Juice Vending Machine',
+          image: 'https://juicetap.in/assets/machine-showcase.png',
+          description: 'Fully automatic orange juice vending machine featuring real-time IoT monitoring, contactless payment, automated orange squeezing under 60 seconds, and hygienic automated cup sealing.',
+          brand: {
+            '@type': 'Brand',
+            name: 'JuiceTap',
+          },
+          manufacturer: {
+            '@type': 'Organization',
+            name: 'JUICETAP GLOBAL PRIVATE LIMITED',
+          },
+          category: 'Vending Machine',
+        }}
+      />
 
       {/* ===== HERO — engineering readout ===== */}
       <section className="page-hero machine-hero">

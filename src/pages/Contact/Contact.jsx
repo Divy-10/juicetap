@@ -22,9 +22,10 @@ export default function Contact() {
   return (
     <PageShell name="contact">
       <SEO
-        title="Contact Us"
-        description="Get in touch with JuiceTap. Reach out for general enquiries, franchise opportunities, or machine locations. Call us, email us, or send a WhatsApp message."
+        title="Contact Us – Machine Inquiries & Support"
+        description="Get in touch with JuiceTap for machine installations, franchise partnerships, customer support, or corporate vending solutions."
         path="/contact"
+        ogImage="/assets/hero-machine.png"
       />
 
       {/* ===== HERO ===== */}

@@ -122,9 +122,10 @@ export default function MeetChampion() {
   return (
     <PageShell name="champion">
       <SEO
-        title="Meet Champion"
-        description="Meet Champion — your JuiceTap guide to fresher, more natural orange juice. Scroll through his story, discover the benefits and claim your personalised JuiceTap Champion certificate."
+        title="Meet Champion – JuiceTap's Fresh Orange Mascot"
+        description="Meet Champion, the official mascot of JuiceTap! Discover Champion's story, learn about 100% natural Valencia orange juice, and claim your personalized JuiceTap Champion certificate."
         path="/meet-champion"
+        ogImage="/assets/champion-wave.png"
       />
 
       <ChampionHero reduced={reduced} onDiscover={() => scrollTo('benefits')} />

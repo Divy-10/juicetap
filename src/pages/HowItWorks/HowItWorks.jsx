@@ -87,9 +87,10 @@ export default function HowItWorks() {
   return (
     <PageShell name="how-it-works">
       <SEO
-        title="How It Works"
-        description="Discover how JuiceTap works — from scanning to sipping. Fresh orange juice in 4 simple steps, under 60 seconds with video showcases."
+        title="How It Works – Automated Orange Juice Dispenser"
+        description="From automated orange selection to instant squeezing and cup sealing, see how JuiceTap serves fresh 100% natural orange juice in 4 quick steps under 60 seconds."
         path="/how-it-works"
+        ogImage="/assets/step-2.png"
       />
 
       {/* ===== HERO — the pour ===== */}

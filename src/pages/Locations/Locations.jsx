@@ -151,7 +151,12 @@ export default function Locations() {
 
   return (
     <PageShell name="locations">
-      <SEO title="Locations & Addresses | JuiceTap Vending Machines" description="Explore all JuiceTap fresh orange juice vending machine locations across Surat, Mumbai, Ahmedabad, Delhi, Jaipur, and Statue of Unity with exact addresses." path="/locations" />
+      <SEO
+        title="JuiceTap Locations – Find Fresh Orange Juice Near You"
+        description="Find JuiceTap automatic orange juice vending machines in Surat, Mumbai, Ahmedabad, Delhi, Jaipur, and Statue of Unity across malls, IT parks, and hospitals."
+        path="/locations"
+        ogImage="/assets/surat-location.jpg"
+      />
 
       {/* ===== HERO — live network map ===== */}
       <section className="page-hero locations-hero">

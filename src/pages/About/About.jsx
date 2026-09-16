@@ -51,9 +51,10 @@ export default function About() {
   return (
     <PageShell name="about">
       <SEO
-        title="About Us | JuiceTap Fresh Orange Juice Technology"
-        description="Learn about JuiceTap — a premium fresh-juice technology brand bringing freshly squeezed orange juice through smart automated vending machines."
+        title="About Us – Smart Orange Juice Vending Technology"
+        description="Discover how JuiceTap combines nature's finest oranges with contactless automated vending technology to deliver pure, 100% natural orange juice across India."
         path="/about"
+        ogImage="/assets/about-hero.jpg"
       />
 
       {/* ===== 1. ABOUT HERO — the orchard =====

@@ -26,7 +26,11 @@ const SECTIONS = [
 export default function PrivacyPolicy() {
   return (
     <PageShell name="legal">
-      <SEO title="Privacy Policy" description="Privacy Policy for JuiceTap Global Private Limited. Understand how we collect, use, and protect your data." path="/privacy-policy" />
+      <SEO
+        title="Privacy Policy – JuiceTap Global"
+        description="Read the privacy policy of JuiceTap Global Private Limited to learn how we collect, use, and safeguard your personal information."
+        path="/privacy-policy"
+      />
 
       <section className="page-hero legal-hero">
         <FloatingElement className="jt-hero-art legal-hero__peel" amplitude={10} rotate={-6} duration={11}>

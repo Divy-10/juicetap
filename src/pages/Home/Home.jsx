@@ -279,9 +279,10 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="Fresh Juice. Just a Tap Away."
-        description="JuiceTap — freshly squeezed orange juice served through smart vending technology. 100% natural, no added sugar, no preservatives. Find a JuiceTap near you."
+        fullTitleOverride="JuiceTap – Fresh Valencia Orange Juice Machines"
+        description="Experience 100% natural, freshly squeezed Valencia orange juice served in under 60 seconds through smart automated vending machines by JuiceTap."
         path="/"
+        ogImage="/assets/hero-machine.png"
       />
 
       {/* ===== HERO SECTION ===== */}

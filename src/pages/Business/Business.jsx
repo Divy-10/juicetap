@@ -185,9 +185,10 @@ export default function Business() {
   return (
     <PageShell name="business">
       <SEO
-        title="Start Your JuiceTap Franchise | Automated Fresh Juice Business"
-        description="Build a high-ROI fresh orange juice business with JuiceTap automated vending technology. Turnkey franchise opportunity with remote IoT monitoring & full support."
+        title="Franchise & Business Solutions – Orange Juice Vending"
+        description="Bring JuiceTap automatic orange juice machines to your corporate office, mall, hospital, or university. Partner with India's leading automated fresh juice brand."
         path="/business"
+        ogImage="/assets/business-locations.png"
       />
 
       {/* ===== 1. PREMIUM FRANCHISE HERO & IMMEDIATE CTAS ===== */}

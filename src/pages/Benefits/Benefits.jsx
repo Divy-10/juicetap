@@ -54,7 +54,12 @@ export default function Benefits() {
 
   return (
     <PageShell name="benefits">
-      <SEO title="Benefits" description="Discover the benefits of JuiceTap — 100% natural, freshly squeezed, no added sugar, no preservatives, hygienic automated process." path="/benefits" />
+      <SEO
+        title="100% Natural Fresh Orange Juice Benefits"
+        description="Discover the health and hygiene benefits of JuiceTap — pure Valencia orange juice squeezed on demand with zero added sugar, zero preservatives, and contactless automated serving."
+        path="/benefits"
+        ogImage="/assets/oranges-fresh.png"
+      />
 
       {/* ===== HERO — "purity" storytelling ===== */}
       <section className="page-hero benefits-hero">
