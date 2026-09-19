@@ -48,7 +48,7 @@ export default function Navbar() {
               >
                 {link.isLogo ? (
                   <img
-                    src="/assets/meet-champion-logo.png"
+                    src="/assets/meet-champion logo2.png"
                     alt="Meet Champion"
                     className="navbar__champion-logo-img"
                   />
@@ -158,7 +158,7 @@ export default function Navbar() {
                 >
                   {link.isLogo ? (
                     <img
-                      src="/assets/meet-champion-logo.png"
+                      src="/assets/meet-champion logo2.png"
                       alt="Meet Champion"
                       className="navbar__mobile-champion-logo-img"
                     />

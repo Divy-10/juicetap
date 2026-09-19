@@ -389,7 +389,7 @@ export default function Home() {
                           className="hero__glass-image hero__mascot-image hero__video"
                         />
                       )}
-                      <span className="hero__mascot-tip" aria-hidden="true">Meet Champion 👋</span>
+                      <span className="hero__mascot-tip" aria-hidden="true">Hey I am Champion 👋</span>
                     </motion.div>
                   </motion.div>
                 </div>
@@ -507,7 +507,7 @@ export default function Home() {
                       className="hero__glass-image hero__mascot-image hero__video"
                     />
                   )}
-                  <span className="hero__mascot-tip" aria-hidden="true">Meet Champion 👋</span>
+                  <span className="hero__mascot-tip" aria-hidden="true">Hey I am Champion 👋</span>
                 </motion.div>
               </motion.div>
             </div>
