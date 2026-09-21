@@ -13400,14 +13400,14 @@ strong, b {
 /* ==========================================================================
    2 — BENEFIT STORY
    ========================================================================== */
-.jt-page--champion .champion-story { position: relative; padding: var(--champ-pad) 0 0; background: var(--color-cream); }
+.jt-page--champion .champion-story { position: relative; padding: var(--champ-pad) 0; background: var(--color-cream); }
 .jt-page--champion .champion-story__intro { padding-bottom: clamp(0.5rem, 2vw, 1.5rem); }
 .jt-page--champion .champion-story__inner {
   display: grid; grid-template-columns: minmax(min(280px, 100%), 0.9fr) 1.1fr;
-  gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; position: relative;
+  gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; position: relative;
 }
 .jt-page--champion .champion-story__stage {
-  position: sticky; top: clamp(84px, 13vh, 130px); height: min(78vh, 600px);
+  position: relative; top: 0; height: auto;
   display: flex; align-items: center; justify-content: center; z-index: 2;
 }
 .jt-page--champion .champion-stage--story { max-width: 300px; position: relative; }
@@ -13415,7 +13415,10 @@ strong, b {
 
 /* Progress rail */
 .jt-page--champion .champion-rail { position: absolute; left: -10px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0; z-index: 6; }
-.jt-page--champion .champion-rail__step { position: relative; display: flex; align-items: center; gap: 0.55rem; padding-bottom: 1.6rem; }
+.jt-page--champion .champion-rail__step {
+  position: relative; display: flex; align-items: center; gap: 0.55rem; padding-bottom: 1.6rem;
+  background: none; border: none; cursor: pointer; text-align: left;
+}
 .jt-page--champion .champion-rail__step:last-child { padding-bottom: 0; }
 .jt-page--champion .champion-rail__dot {
   width: 34px; height: 34px; flex: 0 0 auto; border-radius: 50%;
@@ -13430,25 +13433,50 @@ strong, b {
 .jt-page--champion .champion-rail__step.is-active .champion-rail__dot { background: var(--color-primary); border-color: var(--color-primary); color: #fff; box-shadow: 0 0 0 5px rgba(240,129,33,0.18); transform: scale(1.08); }
 .jt-page--champion .champion-rail__step.is-active .champion-rail__label { color: var(--color-forest); }
 
-/* Scenes */
-.jt-page--champion .champion-story__scenes { display: flex; flex-direction: column; }
-.jt-page--champion .story-scene { min-height: 62vh; display: flex; align-items: center; }
-.jt-page--champion .story-scene:last-child { min-height: 52vh; }
-.jt-page--champion .story-scene__inner {
-  background: #fff; border: 1px solid var(--color-border); border-radius: var(--radius-2xl);
-  padding: clamp(1.6rem, 3.5vw, 2.6rem); box-shadow: var(--shadow-md); position: relative; overflow: hidden;
-  transition: box-shadow var(--transition-base), border-color var(--transition-base);
+/* Scrollable Scenes Box */
+.jt-page--champion .champion-story__scenes-wrapper {
+  position: relative; display: flex; flex-direction: column; gap: 0.8rem;
 }
-.jt-page--champion .story-scene.is-active .story-scene__inner { box-shadow: var(--shadow-lg); border-color: rgba(240,129,33,0.3); }
+.jt-page--champion .champion-story__scenes-scroll {
+  display: flex; flex-direction: column; gap: 1rem;
+  max-height: clamp(380px, 52vh, 460px); overflow-y: auto;
+  padding: 0.3rem 0.5rem 0.3rem 0.2rem;
+  scroll-behavior: smooth; scroll-snap-type: y mandatory;
+  scrollbar-width: thin; scrollbar-color: rgba(240, 129, 33, 0.4) transparent;
+}
+.jt-page--champion .champion-story__scenes-scroll::-webkit-scrollbar { width: 6px; }
+.jt-page--champion .champion-story__scenes-scroll::-webkit-scrollbar-track { background: transparent; }
+.jt-page--champion .champion-story__scenes-scroll::-webkit-scrollbar-thumb { background: rgba(240, 129, 33, 0.4); border-radius: var(--radius-full); }
+
+.jt-page--champion .story-scene { min-height: auto; scroll-snap-align: start; cursor: pointer; }
+.jt-page--champion .story-scene__inner {
+  background: #fff; border: 1.5px solid var(--color-border); border-radius: var(--radius-2xl);
+  padding: clamp(1.2rem, 3vw, 1.8rem); box-shadow: var(--shadow-md); position: relative; overflow: hidden;
+  transition: all var(--transition-base);
+}
+.jt-page--champion .story-scene.is-active .story-scene__inner { box-shadow: 0 10px 28px rgba(240,129,33,0.22); border-color: var(--color-primary); background: #FFFDF8; }
+.jt-page--champion .story-scene__head-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.4rem; }
+.jt-page--champion .story-scene__badge { font-family: var(--font-heading); font-weight: 700; font-size: 0.78rem; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); background: rgba(240, 129, 33, 0.12); color: var(--color-primary); }
 .jt-page--champion .story-scene__num {
-  font-family: var(--font-heading); font-weight: 800; font-size: clamp(2.6rem, 6vw, 4rem);
-  line-height: 1; color: transparent; -webkit-text-stroke: 2px rgba(240,129,33,0.4); display: block; margin-bottom: 0.4rem;
+  font-family: var(--font-heading); font-weight: 800; font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1; color: transparent; -webkit-text-stroke: 2px rgba(240,129,33,0.4); display: block;
 }
 .jt-page--champion .story-scene.is-active .story-scene__num { color: var(--color-primary); -webkit-text-stroke: 0; }
-.jt-page--champion .story-scene__title { font-family: var(--font-heading); font-weight: 800; font-size: var(--text-3xl); color: var(--color-forest); margin: 0 0 0.7rem; }
-.jt-page--champion .story-scene__detail { color: var(--color-text-secondary); font-size: var(--text-md); line-height: var(--leading-relaxed); margin: 0 0 1.1rem; }
-.jt-page--champion .story-scene__quote { position: relative; padding-left: 1rem; border-left: 3px solid var(--color-primary); color: var(--color-forest); font-weight: 600; font-size: 0.95rem; line-height: 1.5; margin: 0; }
-.jt-page--champion .story-scene__quote-label { display: block; font-family: var(--font-heading); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-primary); margin-bottom: 0.2rem; }
+.jt-page--champion .story-scene__title { font-family: var(--font-heading); font-weight: 800; font-size: clamp(1.3rem, 2.5vw, var(--text-2xl)); color: var(--color-forest); margin: 0 0 0.5rem; }
+.jt-page--champion .story-scene__detail { color: var(--color-text-secondary); font-size: 0.92rem; line-height: var(--leading-relaxed); margin: 0 0 0.9rem; }
+.jt-page--champion .story-scene__quote { position: relative; padding-left: 0.9rem; border-left: 3px solid var(--color-primary); color: var(--color-forest); font-weight: 600; font-size: 0.88rem; line-height: 1.45; margin: 0; }
+.jt-page--champion .story-scene__quote-label { display: block; font-family: var(--font-heading); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-primary); margin-bottom: 0.15rem; }
+
+/* Nav Dots */
+.jt-page--champion .champion-story__nav-dots { display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding-top: 0.3rem; }
+.jt-page--champion .champion-story__dot-btn {
+  width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--color-border);
+  background: #FFFFFF; color: var(--color-text-tertiary); font-family: var(--font-heading);
+  font-weight: 700; font-size: 0.76rem; cursor: pointer; display: grid; place-items: center;
+  transition: all var(--transition-base);
+}
+.jt-page--champion .champion-story__dot-btn:hover { border-color: var(--color-primary); color: var(--color-primary); transform: scale(1.08); }
+.jt-page--champion .champion-story__dot-btn.is-active { background: var(--color-primary); border-color: var(--color-primary); color: #FFFFFF; box-shadow: 0 0 0 4px rgba(240,129,33,0.18); transform: scale(1.1); }
 
 /* Scene FX */
 .jt-page--champion .champion-scene-fx { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
@@ -13669,12 +13697,14 @@ strong, b {
   .jt-page--champion .champion-stage--hero { max-width: 290px; margin: 2.8rem auto 0; position: relative; }
   .jt-page--champion .champion-stage--hero .champion-img { max-height: 320px; }
 
-  /* Story: stage becomes a slim sticky top banner, scenes scroll under it */
-  .jt-page--champion .champion-story__inner { grid-template-columns: 1fr; gap: 0; }
+  /* Story: stage pinned at top, steps scroll in a neat container */
+  .jt-page--champion .champion-story__inner { grid-template-columns: 1fr; gap: 1.2rem; }
   .jt-page--champion .champion-story__stage {
-    position: sticky; top: 62px; height: auto; padding: 0.6rem 0 1rem; z-index: 5;
-    background: linear-gradient(180deg, var(--color-cream) 82%, rgba(255,249,242,0));
+    position: relative; top: 0; height: auto; padding: 0.4rem 0 0.8rem; z-index: 5;
     flex-direction: column;
+  }
+  .jt-page--champion .champion-story__scenes-scroll {
+    max-height: clamp(300px, 46vh, 400px);
   }
   .jt-page--champion .champion-stage--story { max-width: 220px; margin-top: 1.8rem; }
   .jt-page--champion .champion-stage--story .champion-img { max-height: 190px; }
@@ -13695,8 +13725,8 @@ strong, b {
   .jt-page--champion .champion-rail__step { flex-direction: column; gap: 0.2rem; padding: 0 0.6rem 0 0; }
   .jt-page--champion .champion-rail__line { left: 34px; top: 16px; width: 0.7rem; height: 2px; }
   .jt-page--champion .champion-rail__dot { width: 28px; height: 28px; font-size: 0.72rem; }
-  .jt-page--champion .story-scene { min-height: 48vh; display: flex; align-items: center; padding: 1.2rem 0 1.8rem; }
-  .jt-page--champion .story-scene:first-child { padding-top: 1.8rem; }
+  .jt-page--champion .story-scene { min-height: auto; padding: 0; }
+  .jt-page--champion .story-scene:first-child { padding-top: 0; }
   .jt-page--champion .champion-scene-fx { display: block; position: absolute; inset: 0; z-index: 4; pointer-events: none; }
 
   /* Promise: badges stack under Champion, not around */

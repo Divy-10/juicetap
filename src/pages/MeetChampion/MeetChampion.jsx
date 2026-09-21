@@ -261,7 +261,15 @@ function ChampionHero({ reduced, onDiscover }) {
    ================================================================ */
 function BenefitStory({ reduced }) {
   const [active, setActive] = useState(0);
+  const sceneRefs = useRef([]);
   const b = BENEFITS[active];
+
+  const handleSelectStep = (index) => {
+    setActive(index);
+    if (sceneRefs.current[index]) {
+      sceneRefs.current[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  };
 
   return (
     <section className="champion-story" id="benefits">
@@ -269,14 +277,14 @@ function BenefitStory({ reduced }) {
         <Reveal variant="up" className="champion-section-head">
           <span className="champion-eyebrow">CHAMPION SPEAKS</span>
           <h2 className="champion-h2">Let me tell you about myself</h2>
-          <p className="champion-sub">Scroll on — I&rsquo;ll walk you through what makes me, me. 🍊</p>
+          <p className="champion-sub">Explore my 5 fresh promises — click or scroll the steps below. 🍊</p>
         </Reveal>
       </div>
 
       <div className="champion-story__inner container">
-        {/* Sticky stage — Champion + live scene FX + progress rail */}
+        {/* Pinned stage — Champion + live scene FX + progress rail */}
         <div className="champion-story__stage">
-          <ProgressRail active={active} />
+          <ProgressRail active={active} onSelect={handleSelectStep} />
 
           <div className="champion-stage champion-stage--story">
             <div className="champion-scene-fx" aria-hidden="true">
@@ -315,43 +323,70 @@ function BenefitStory({ reduced }) {
           </div>
         </div>
 
-        {/* Scrolling scenes */}
-        <div className="champion-story__scenes">
-          {BENEFITS.map((item, i) => (
-            <motion.article
-              key={item.id}
-              className={`story-scene ${i === active ? 'is-active' : ''}`}
-              onViewportEnter={() => setActive(i)}
-              viewport={{ amount: 0.55 }}
-            >
-              <Reveal variant="up" className="story-scene__inner">
-                <span className="story-scene__num">{item.num}</span>
-                <h3 className="story-scene__title">
-                  {item.statement} <span className="story-scene__emoji" aria-hidden="true">{item.emoji}</span>
-                </h3>
-                <p className="story-scene__detail">{item.detail}</p>
-                <p className="story-scene__quote">
-                  <span className="story-scene__quote-label">Champion says</span>
-                  &ldquo;{item.speech}&rdquo;
-                </p>
-              </Reveal>
-            </motion.article>
-          ))}
+        {/* Scrollable text steps container */}
+        <div className="champion-story__scenes-wrapper">
+          <div className="champion-story__scenes-scroll">
+            {BENEFITS.map((item, i) => (
+              <motion.article
+                key={item.id}
+                ref={(el) => (sceneRefs.current[i] = el)}
+                className={`story-scene ${i === active ? 'is-active' : ''}`}
+                onClick={() => setActive(i)}
+                onViewportEnter={() => setActive(i)}
+                viewport={{ amount: 0.55 }}
+              >
+                <div className="story-scene__inner">
+                  <div className="story-scene__head-row">
+                    <span className="story-scene__num">{item.num}</span>
+                    <span className="story-scene__badge">{item.title}</span>
+                  </div>
+                  <h3 className="story-scene__title">
+                    {item.statement} <span className="story-scene__emoji" aria-hidden="true">{item.emoji}</span>
+                  </h3>
+                  <p className="story-scene__detail">{item.detail}</p>
+                  <p className="story-scene__quote">
+                    <span className="story-scene__quote-label">Champion says</span>
+                    &ldquo;{item.speech}&rdquo;
+                  </p>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+
+          {/* Quick step navigation indicator */}
+          <div className="champion-story__nav-dots">
+            {BENEFITS.map((item, i) => (
+              <button
+                key={item.id}
+                type="button"
+                className={`champion-story__dot-btn ${i === active ? 'is-active' : ''}`}
+                onClick={() => handleSelectStep(i)}
+                aria-label={`Go to step ${item.num}: ${item.title}`}
+              >
+                <span className="champion-story__dot-num">{item.num}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function ProgressRail({ active }) {
+function ProgressRail({ active, onSelect }) {
   return (
-    <div className="champion-rail" role="presentation">
+    <div className="champion-rail" role="tablist" aria-label="Benefit steps">
       {BENEFITS.map((b, i) => (
-        <div key={b.id} className={`champion-rail__step ${i === active ? 'is-active' : ''} ${i < active ? 'is-done' : ''}`}>
+        <button
+          type="button"
+          key={b.id}
+          className={`champion-rail__step ${i === active ? 'is-active' : ''} ${i < active ? 'is-done' : ''}`}
+          onClick={() => onSelect && onSelect(i)}
+        >
           <span className="champion-rail__dot">{b.num}</span>
           <span className="champion-rail__label">{b.title}</span>
           {i < BENEFITS.length - 1 && <span className="champion-rail__line" />}
-        </div>
+        </button>
       ))}
     </div>
   );
