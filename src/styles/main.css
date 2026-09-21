@@ -13223,7 +13223,7 @@ strong, b {
 /* ==========================================================================
    SHARED
    ========================================================================== */
-.jt-page--champion { overflow-x: clip; --champ-pad: clamp(2.6rem, 5.5vw, 4.5rem); }
+.jt-page--champion { overflow-x: hidden; max-width: 100vw; --champ-pad: clamp(2.2rem, 5.5vw, 4.5rem); }
 .jt-page--champion .citrus-divider { margin: 0; display: block; line-height: 0; }
 .jt-page--champion .citrus-divider + section { margin-top: -1px; }
 
@@ -13308,15 +13308,22 @@ strong, b {
 
 /* Hero Section Speech Bubble Position & Tail */
 .jt-page--champion .champion-bubble--hero {
-  top: -1.8rem;
+  top: -3.2rem;
   left: 50%;
   transform: translateX(-50%);
-  margin: 0;
+  width: calc(100vw - 36px);
+  max-width: 290px;
+  margin: 0 auto;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 0.75rem 1rem;
+  z-index: 10;
 }
 .jt-page--champion .champion-bubble--hero .champion-bubble__tail {
   bottom: -8px;
   left: 50%;
-  margin-left: -7px;
+  transform: translateX(-50%) rotate(45deg);
+  margin-left: 0;
 }
 
 /* Benefit Story Section Speech Bubble Position & Tail */
@@ -13396,7 +13403,7 @@ strong, b {
 .jt-page--champion .champion-story { position: relative; padding: var(--champ-pad) 0 0; background: var(--color-cream); }
 .jt-page--champion .champion-story__intro { padding-bottom: clamp(0.5rem, 2vw, 1.5rem); }
 .jt-page--champion .champion-story__inner {
-  display: grid; grid-template-columns: minmax(320px, 0.9fr) 1.1fr;
+  display: grid; grid-template-columns: minmax(min(280px, 100%), 0.9fr) 1.1fr;
   gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; position: relative;
 }
 .jt-page--champion .champion-story__stage {
@@ -13650,16 +13657,17 @@ strong, b {
    ========================================================================== */
 @media (max-width: 1024px) {
   .jt-page--champion .champion-rail__label { display: none; }
-  .jt-page--champion .champion-rail { left: 2px; }
+  .jt-page--champion .champion-rail { left: 4px; }
+  .jt-page--champion .champion-story__inner { gap: 2rem; }
 }
 @media (max-width: 900px) {
   .jt-page--champion .champion-hero__grid { grid-template-columns: 1fr; text-align: center; }
   .jt-page--champion .champion-hero__copy { order: 2; }
-  .jt-page--champion .champion-hero__stage { order: 1; }
+  .jt-page--champion .champion-hero__stage { order: 1; display: flex; justify-content: center; width: 100%; position: relative; }
   .jt-page--champion .champion-hero__lead { margin-left: auto; margin-right: auto; }
   .jt-page--champion .champion-hero__actions, .jt-page--champion .champion-hero__chips { justify-content: center; }
-  .jt-page--champion .champion-stage--hero { max-width: 300px; margin-top: 1.2rem; }
-  .jt-page--champion .champion-stage--hero .champion-img { max-height: 340px; }
+  .jt-page--champion .champion-stage--hero { max-width: 290px; margin: 2.8rem auto 0; position: relative; }
+  .jt-page--champion .champion-stage--hero .champion-img { max-height: 320px; }
 
   /* Story: stage becomes a slim sticky top banner, scenes scroll under it */
   .jt-page--champion .champion-story__inner { grid-template-columns: 1fr; gap: 0; }
@@ -13683,8 +13691,8 @@ strong, b {
     left: 50%;
     margin-left: -6px;
   }
-  .jt-page--champion .champion-rail { position: static; transform: none; flex-direction: row; justify-content: center; gap: 0; margin-top: 0.4rem; order: 3; }
-  .jt-page--champion .champion-rail__step { flex-direction: column; gap: 0.2rem; padding: 0 0.7rem 0 0; }
+  .jt-page--champion .champion-rail { position: static; transform: none; flex-direction: row; justify-content: center; gap: 0; margin-top: 0.4rem; order: 3; width: 100%; }
+  .jt-page--champion .champion-rail__step { flex-direction: column; gap: 0.2rem; padding: 0 0.6rem 0 0; }
   .jt-page--champion .champion-rail__line { left: 34px; top: 16px; width: 0.7rem; height: 2px; }
   .jt-page--champion .champion-rail__dot { width: 28px; height: 28px; font-size: 0.72rem; }
   .jt-page--champion .story-scene { min-height: auto; padding: 1rem 0 1.4rem; }
@@ -13692,36 +13700,63 @@ strong, b {
   .jt-page--champion .champion-scene-fx { display: none; }
 
   /* Promise: badges stack under Champion, not around */
-  .jt-page--champion .champion-orbit-wrap { grid-template-columns: 1fr; }
+  .jt-page--champion .champion-orbit-wrap { grid-template-columns: 1fr; min-height: auto; }
   .jt-page--champion .champion-orbit-center { grid-column: 1; margin: 0 auto; }
-  .jt-page--champion .champion-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7rem; margin-top: 1.6rem; }
-  .jt-page--champion .champion-badges > .champion-badge-orb { grid-column: auto !important; justify-self: auto !important; margin: 0 !important; align-self: auto !important; width: 130px; }
+  .jt-page--champion .champion-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7rem; margin-top: 1.6rem; position: static; inset: auto; width: 100%; }
+  .jt-page--champion .champion-badges > .champion-badge-orb { grid-column: auto !important; justify-self: auto !important; margin: 0 !important; align-self: auto !important; position: static !important; width: clamp(110px, 28vw, 130px); }
 
-  .jt-page--champion .champion-cert__layout { grid-template-columns: 1fr; }
+  .jt-page--champion .champion-cert__layout { grid-template-columns: 1fr; gap: 1.8rem; }
   .jt-page--champion .champion-cert__preview-col { order: 1; max-width: 520px; margin: 0 auto; width: 100%; }
-  .jt-page--champion .champion-cert__action-col { order: 2; }
+  .jt-page--champion .champion-cert__action-col { order: 2; width: 100%; }
   .jt-page--champion .champion-cert-frame { transform: none; }
   .jt-page--champion .champion-cert-frame:hover { transform: none; }
 }
-@media (max-width: 560px) {
-  .jt-page--champion { --champ-pad: clamp(2.2rem, 7vw, 3rem); }
+@media (max-width: 600px) {
+  .jt-page--champion .champion-oath-grid { grid-template-columns: 1fr; }
+  .jt-page--champion .champion-oath-card__footer { flex-direction: column; align-items: stretch; text-align: center; }
+  .jt-page--champion .champion-oath-all { width: 100%; justify-content: center; box-sizing: border-box; }
+  .jt-page--champion .champion-oath-status__badge { width: 100%; justify-content: center; box-sizing: border-box; text-align: center; }
+}
+@media (max-width: 480px) {
+  .jt-page--champion { --champ-pad: clamp(1.8rem, 6vw, 2.6rem); }
+  .jt-page--champion .champion-stage--hero { max-width: 250px; margin: 2.6rem auto 0; }
   .jt-page--champion .champion-bubble--hero {
-    top: -1.6rem;
+    top: -3.0rem;
     left: 50%;
     transform: translateX(-50%);
-    max-width: min(260px, 88vw);
+    width: calc(100vw - 28px);
+    max-width: 265px;
     font-size: 0.84rem;
-    padding: 0.65rem 0.95rem;
+    padding: 0.65rem 0.9rem;
+    box-sizing: border-box;
   }
-  .jt-page--champion .champion-stage--hero { max-width: 250px; margin-top: 1.6rem; }
-  .jt-page--champion .champion-img { max-height: 290px; }
-  .jt-page--champion .champion-hero__actions .btn { width: 100%; justify-content: center; }
-  .jt-page--champion .champion-badge-orb { width: 116px; }
-  .hero__meet-champion { width: 100%; }
+  .jt-page--champion .champion-img { max-height: 280px; }
+  .jt-page--champion .champion-hero__actions .btn { width: 100%; justify-content: center; box-sizing: border-box; }
+  .jt-page--champion .champion-badge-orb { width: calc(50% - 0.4rem); max-width: 140px; padding: 0.75rem 0.4rem; box-sizing: border-box; }
+  .jt-page--champion .hero__meet-champion { width: 100%; }
+  .jt-page--champion .champion-rail__line { display: none; }
+  .jt-page--champion .champion-rail__step { padding: 0 0.25rem; }
+  .jt-page--champion .champion-cert__card { padding: 1.2rem 0.95rem; }
+  .jt-page--champion .champion-cta.btn-lg { width: 100%; justify-content: center; box-sizing: border-box; padding-left: 0.75rem; padding-right: 0.75rem; font-size: 0.94rem; }
 }
-@media (max-width: 380px) {
+@media (max-width: 375px) {
+  .jt-page--champion .champion-stage--hero { max-width: 230px; margin: 2.4rem auto 0; }
+  .jt-page--champion .champion-bubble--hero {
+    top: -2.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100vw - 24px);
+    max-width: 245px;
+    font-size: 0.8rem;
+    padding: 0.6rem 0.8rem;
+    box-sizing: border-box;
+  }
   .jt-page--champion .champion-rail__dot { width: 24px; height: 24px; font-size: 0.66rem; }
-  .jt-page--champion .champion-badge-orb { width: 46%; }
+  .jt-page--champion .champion-badge-orb { width: calc(50% - 0.35rem); }
+  .jt-page--champion .champion-badge-orb__icon { font-size: 1.4rem; }
+  .jt-page--champion .champion-badge-orb__label { font-size: 0.75rem; }
+  .jt-page--champion .story-scene__inner { padding: 1.1rem 0.85rem; }
+  .jt-page--champion .champion-cert-frame__float { display: none; }
 }
 
 /* Reduced motion — stop looping keyframes (Framer honours the rest) */
@@ -14198,18 +14233,27 @@ strong, b {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.8rem 1.25rem;
+  padding: 0.85rem 1.25rem;
   background: linear-gradient(135deg, #123B20 0%, #0A2A16 100%);
-  color: #FFFFFF;
+  color: #FFFFFF !important;
   border-radius: var(--radius-xl);
   cursor: pointer;
   user-select: none;
   transition: all var(--transition-base);
   box-shadow: var(--shadow-md);
+  max-width: 100%;
+  box-sizing: border-box;
 }
 .jt-page--champion .champion-oath-all:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-orange-glow);
+}
+.jt-page--champion .champion-oath-all * {
+  color: #FFFFFF !important;
+}
+.jt-page--champion .champion-oath-all strong {
+  color: #FFFFFF !important;
+  font-weight: 800;
 }
 .jt-page--champion .champion-oath-item__checkbox--all {
   border-color: rgba(255, 255, 255, 0.4);
@@ -14222,6 +14266,8 @@ strong, b {
 .jt-page--champion .champion-oath-all__text {
   font-family: var(--font-heading);
   font-size: 0.92rem;
+  color: #FFFFFF !important;
+  line-height: 1.35;
 }
 .jt-page--champion .champion-oath-status__badge {
   display: inline-flex;
