@@ -13695,9 +13695,9 @@ strong, b {
   .jt-page--champion .champion-rail__step { flex-direction: column; gap: 0.2rem; padding: 0 0.6rem 0 0; }
   .jt-page--champion .champion-rail__line { left: 34px; top: 16px; width: 0.7rem; height: 2px; }
   .jt-page--champion .champion-rail__dot { width: 28px; height: 28px; font-size: 0.72rem; }
-  .jt-page--champion .story-scene { min-height: auto; padding: 1rem 0 1.4rem; }
-  .jt-page--champion .story-scene:first-child { padding-top: 1.4rem; }
-  .jt-page--champion .champion-scene-fx { display: none; }
+  .jt-page--champion .story-scene { min-height: 48vh; display: flex; align-items: center; padding: 1.2rem 0 1.8rem; }
+  .jt-page--champion .story-scene:first-child { padding-top: 1.8rem; }
+  .jt-page--champion .champion-scene-fx { display: block; position: absolute; inset: 0; z-index: 4; pointer-events: none; }
 
   /* Promise: badges stack under Champion, not around */
   .jt-page--champion .champion-orbit-wrap { grid-template-columns: 1fr; min-height: auto; }
