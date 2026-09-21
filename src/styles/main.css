@@ -13444,7 +13444,7 @@ strong, b {
 .jt-page--champion .story-scene__quote-label { display: block; font-family: var(--font-heading); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-primary); margin-bottom: 0.2rem; }
 
 /* Scene FX */
-.jt-page--champion .champion-scene-fx { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.jt-page--champion .champion-scene-fx { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
 .jt-page--champion .champion-stage--story .champion-figure { position: relative; z-index: 3; }
 .jt-page--champion .scenefx { position: absolute; inset: 0; }
 .jt-page--champion .orange-slice-svg { display: block; filter: drop-shadow(0 6px 12px rgba(216,86,0,0.2)); }
@@ -13459,11 +13459,25 @@ strong, b {
 .jt-page--champion .scenefx__leaf--5 { top: 70%; right: 8%; animation: fx-rise 5.6s ease-in-out 1.4s infinite; }
 .jt-page--champion .scenefx__leaf--6 { top: 50%; right: 2%; animation: fx-rise 6.8s ease-in-out 0.9s infinite; }
 /* sugar */
-.jt-page--champion .scenefx__noring { position: absolute; top: 6%; left: 50%; width: 64px; height: 64px; margin-left: -32px; border: 5px solid rgba(211,47,47,0.5); border-radius: 50%; }
-.jt-page--champion .scenefx__noring::after { content: ''; position: absolute; top: 50%; left: -6px; right: -6px; height: 5px; background: rgba(211,47,47,0.5); transform: rotate(-45deg); border-radius: 3px; }
+.jt-page--champion .scenefx--sugar { z-index: 4; }
+.jt-page--champion .scenefx__noring {
+  position: absolute;
+  top: 4%;
+  left: 14%;
+  width: 84px;
+  height: 84px;
+  z-index: 5;
+  filter: drop-shadow(0 6px 14px rgba(211, 47, 47, 0.28));
+  animation: fx-pulse 3.2s ease-in-out infinite;
+}
+.jt-page--champion .scenefx__sugar-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
 .jt-page--champion .scenefx__cube { position: absolute; width: 18px; height: 18px; background: #fff; border: 2px solid rgba(240,129,33,0.55); border-radius: 4px; box-shadow: var(--shadow-xs); }
-.jt-page--champion .scenefx__cube--1 { top: 30%; left: 12%; }
-.jt-page--champion .scenefx__cube--2 { top: 55%; left: 4%; }
+.jt-page--champion .scenefx__cube--1 { top: 32%; left: 6%; }
+.jt-page--champion .scenefx__cube--2 { top: 56%; left: 4%; }
 .jt-page--champion .scenefx__cube--3 { top: 44%; right: 8%; }
 .jt-page--champion .scenefx__cube--1.is-reject { animation: fx-reject-l 2.6s ease-in-out infinite; }
 .jt-page--champion .scenefx__cube--2.is-reject { animation: fx-reject-l 2.9s ease-in-out 0.4s infinite; }
@@ -13779,10 +13793,20 @@ strong, b {
 
 .jt-page--champion .scenefx__stamp {
   position: absolute; font-family: var(--font-heading); font-weight: 800;
-  letter-spacing: 0.05em; border-radius: var(--radius-full); padding: 0.3rem 0.7rem;
-  font-size: 0.66rem; color: #fff; box-shadow: var(--shadow-sm); white-space: nowrap;
+  letter-spacing: 0.06em; border-radius: var(--radius-full); padding: 0.4rem 0.85rem;
+  font-size: 0.72rem; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.25); white-space: nowrap;
+  z-index: 6;
 }
-.jt-page--champion .scenefx__stamp--sugar { bottom: 16%; left: 4%; background: var(--color-error); transform: rotate(-8deg); animation: fx-stamp 3.2s ease-in-out infinite; }
+.jt-page--champion .scenefx__stamp--sugar {
+  bottom: 20%;
+  left: -2%;
+  background: linear-gradient(135deg, #EF5350, #C62828);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 4px 16px rgba(198, 40, 40, 0.45);
+  transform: rotate(-6deg);
+  animation: fx-stamp 3.2s ease-in-out infinite;
+  z-index: 6;
+}
 .jt-page--champion .scenefx__stamp--clean { bottom: 16%; left: 8%; background: var(--color-success); transform: rotate(-6deg); animation: fx-stamp 3.2s ease-in-out infinite; }
 @keyframes fx-stamp { 0%, 18% { opacity: 0; } 34%, 100% { opacity: 1; } }
 
@@ -14044,6 +14068,204 @@ strong, b {
    them clearly visible without altering the artwork. */
 .jt-page--champion .champion-hero .champion-orbit__slice {
   filter: drop-shadow(0 8px 16px rgba(90, 40, 0, 0.26));
+}
+
+/* ==========================================================================
+   CHAMPION — HEALTHY JUICE OATH / PLEDGE CARD
+   ========================================================================== */
+.jt-page--champion .champion-oath-card {
+  background: linear-gradient(135deg, #FFFDF9 0%, #FFF4E5 100%);
+  border: 2px solid rgba(240, 129, 33, 0.35);
+  border-radius: var(--radius-2xl);
+  padding: clamp(1.4rem, 3.5vw, 2.2rem);
+  box-shadow: 0 12px 36px rgba(240, 129, 33, 0.12);
+  margin-bottom: clamp(2.2rem, 4vw, 3.2rem);
+  position: relative;
+  overflow: hidden;
+}
+.jt-page--champion .champion-oath-card__head {
+  text-align: center;
+  max-width: 620px;
+  margin: 0 auto 1.6rem;
+}
+.jt-page--champion .champion-oath-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(240, 129, 33, 0.12);
+  border: 1px solid rgba(240, 129, 33, 0.3);
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 0.6rem;
+}
+.jt-page--champion .champion-oath-card__eyebrow {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.76rem;
+  letter-spacing: 0.12em;
+  color: var(--color-primary-dark);
+}
+.jt-page--champion .champion-oath-card__title {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: clamp(1.45rem, 3vw, 1.9rem);
+  color: var(--color-forest);
+  margin: 0 0 0.4rem;
+}
+.jt-page--champion .champion-oath-card__desc {
+  color: var(--color-text-secondary);
+  font-size: 0.94rem;
+  margin: 0;
+}
+.jt-page--champion .champion-oath-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0.95rem;
+  margin-bottom: 1.4rem;
+}
+.jt-page--champion .champion-oath-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.95rem 1.15rem;
+  background: #FFFFFF;
+  border: 1.8px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  user-select: none;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
+}
+.jt-page--champion .champion-oath-item:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.jt-page--champion .champion-oath-item.is-checked {
+  background: #FFF8EE;
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 14px rgba(240, 129, 33, 0.18);
+}
+.jt-page--champion .champion-oath-item__input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.jt-page--champion .champion-oath-item__checkbox {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+  border-radius: 7px;
+  border: 2px solid var(--color-border-dark);
+  background: #FFFFFF;
+  display: grid;
+  place-items: center;
+  transition: all var(--transition-base);
+}
+.jt-page--champion .champion-oath-item.is-checked .champion-oath-item__checkbox {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #FFFFFF;
+}
+.jt-page--champion .champion-oath-item__check {
+  font-weight: 900;
+  font-size: 0.9rem;
+  color: #FFFFFF;
+}
+.jt-page--champion .champion-oath-item__icon {
+  font-size: 1.35rem;
+  flex: 0 0 auto;
+}
+.jt-page--champion .champion-oath-item__text {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-forest);
+  line-height: 1.35;
+}
+
+/* Footer / Master Toggle */
+.jt-page--champion .champion-oath-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 1.1rem;
+  border-top: 1.5px dashed rgba(240, 129, 33, 0.3);
+}
+.jt-page--champion .champion-oath-all {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1.25rem;
+  background: linear-gradient(135deg, #123B20 0%, #0A2A16 100%);
+  color: #FFFFFF;
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  user-select: none;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-md);
+}
+.jt-page--champion .champion-oath-all:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-orange-glow);
+}
+.jt-page--champion .champion-oath-item__checkbox--all {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.15);
+}
+.jt-page--champion .champion-oath-all.is-checked .champion-oath-item__checkbox--all {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.jt-page--champion .champion-oath-all__text {
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+}
+.jt-page--champion .champion-oath-status__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1.05rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.84rem;
+  background: #FFFFFF;
+  color: var(--color-text-tertiary);
+  border: 1px solid var(--color-border);
+}
+.jt-page--champion .champion-oath-status__badge.is-done {
+  background: #E8F5E9;
+  color: #2E7D32;
+  border-color: #A5D6A7;
+  box-shadow: 0 2px 10px rgba(46, 125, 50, 0.18);
+}
+.jt-page--champion .champion-oath-card__error {
+  margin-top: 0.9rem;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(211, 47, 47, 0.1);
+  border: 1px solid rgba(211, 47, 47, 0.3);
+  color: var(--color-error);
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-align: center;
+}
+.jt-page--champion .champion-cert__lock-notice {
+  background: #FFF3E5;
+  border: 1.5px solid rgba(240, 129, 33, 0.4);
+  color: var(--color-forest);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  font-size: 0.86rem;
+  margin-bottom: 1.1rem;
+}
+.jt-page--champion .champion-form__submit.is-locked {
+  background: linear-gradient(135deg, #78909C, #546E7A);
+  border-color: #546E7A;
+  box-shadow: none;
 }
 
 /* --------------------------- RESPONSIVE SAFETY ---------------------------- */

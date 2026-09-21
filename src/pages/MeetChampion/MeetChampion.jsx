@@ -380,7 +380,9 @@ function SceneFX({ id, reduced }) {
   if (id === 'sugar') {
     return (
       <motion.div className="scenefx scenefx--sugar" {...base}>
-        <span className="scenefx__noring" />
+        <div className="scenefx__noring" title="No Added Sugar">
+          <SugarCancelIcon />
+        </div>
         {[0, 1, 2].map((i) => (
           <span key={i} className={`scenefx__cube scenefx__cube--${i + 1} ${reduced ? '' : 'is-reject'}`} />
         ))}
@@ -529,10 +531,23 @@ function ChampionsPromise({ reduced, onClaim }) {
 /* ================================================================
    4 — CERTIFICATE (live preview + personalization + generation)
    ================================================================ */
+const PLEDGE_ITEMS = [
+  { id: 'natural', icon: '🍊', text: 'I promise to drink 100% natural fruit juice.' },
+  { id: 'sugar', icon: '🚫', text: 'I promise not to add any extra sugar.' },
+  { id: 'preservatives', icon: '✨', text: 'I promise to choose fresh juice with zero preservatives.' },
+  { id: 'hygienic', icon: '🧼', text: 'I promise to always prefer clean & hygienic juice.' },
+];
+
 const initialForm = { name: '', email: '', city: '', consent: false };
 const GEN_STEPS = ['Personalizing', 'Adding Your Name', 'Finalizing', 'Ready!'];
 
 function CertificateSection({ reduced }) {
+  const [pledges, setPledges] = useState({
+    natural: false,
+    sugar: false,
+    preservatives: false,
+    hygienic: false,
+  });
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle'); // idle | loading | success | error
@@ -542,6 +557,28 @@ function CertificateSection({ reduced }) {
   const [livePreview, setLivePreview] = useState('');
   const lastKeyRef = useRef('');
   const emailConfigured = isEmailConfigured();
+
+  const pledgedCount = Object.values(pledges).filter(Boolean).length;
+  const isAllPledged = pledgedCount === PLEDGE_ITEMS.length;
+
+  const handleTogglePledge = (id) => {
+    setPledges((prev) => {
+      const next = { ...prev, [id]: !prev[id] };
+      if (errors.pledge) setErrors((er) => ({ ...er, pledge: '' }));
+      return next;
+    });
+  };
+
+  const handleToggleAllPledges = () => {
+    const nextVal = !isAllPledged;
+    setPledges({
+      natural: nextVal,
+      sugar: nextVal,
+      preservatives: nextVal,
+      hygienic: nextVal,
+    });
+    if (errors.pledge) setErrors((er) => ({ ...er, pledge: '' }));
+  };
 
   /* Live certificate preview — debounced, cached images keep it cheap */
   useEffect(() => {
@@ -562,6 +599,7 @@ function CertificateSection({ reduced }) {
 
   const validate = () => {
     const e = {};
+    if (!isAllPledged) e.pledge = 'Please tick all 4 promises above to unlock your certificate.';
     const name = form.name.trim();
     if (!name) e.name = 'Please enter your name';
     else if (!NAME_RE.test(name)) e.name = 'Enter a valid name (letters only)';
@@ -656,6 +694,7 @@ function CertificateSection({ reduced }) {
 
   const reset = () => {
     setForm(initialForm);
+    setPledges({ natural: false, sugar: false, preservatives: false, hygienic: false });
     setErrors({});
     setResult(null);
     setStatus('idle');
@@ -672,12 +711,77 @@ function CertificateSection({ reduced }) {
       <div className="container">
         <Reveal variant="up" className="champion-section-head">
           <span className="champion-eyebrow">YOUR REWARD</span>
-          <h2 className="champion-h2">{status === 'success' ? 'Congratulations, Champion! 🏆' : 'Make It Yours'}</h2>
+          <h2 className="champion-h2">{status === 'success' ? 'Congratulations, Champion! 🏆' : 'Claim Your Certificate'}</h2>
           <p className="champion-sub">
             {status === 'success'
               ? 'Your personalised certificate is ready — see it below.'
-              : 'Enter your details and Champion will prepare your certificate. Watch it update live.'}
+              : 'Take your healthy juice promise below to unlock your personalised certificate.'}
           </p>
+        </Reveal>
+
+        {/* --- CHAMPION'S HEALTHY JUICE PROMISE CARD --- */}
+        <Reveal variant="up" className="champion-oath-card">
+          <div className="champion-oath-card__head">
+            <div className="champion-oath-card__badge">
+              <span className="champion-oath-card__emoji" aria-hidden="true">📜</span>
+              <span className="champion-oath-card__eyebrow">HEALTHY HABIT PROMISE</span>
+            </div>
+            <h3 className="champion-oath-card__title">My Healthy Juice Promise 🍊</h3>
+            <p className="champion-oath-card__desc">
+              Tick these 4 simple steps to unlock your official Champion Certificate!
+            </p>
+          </div>
+
+          <div className="champion-oath-grid">
+            {PLEDGE_ITEMS.map((item) => {
+              const isChecked = pledges[item.id];
+              return (
+                <label key={item.id} className={`champion-oath-item ${isChecked ? 'is-checked' : ''}`}>
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={() => handleTogglePledge(item.id)}
+                    className="champion-oath-item__input"
+                  />
+                  <span className="champion-oath-item__checkbox" aria-hidden="true">
+                    {isChecked && <span className="champion-oath-item__check">✓</span>}
+                  </span>
+                  <span className="champion-oath-item__icon" aria-hidden="true">{item.icon}</span>
+                  <span className="champion-oath-item__text">{item.text}</span>
+                </label>
+              );
+            })}
+          </div>
+
+          <div className="champion-oath-card__footer">
+            <label className={`champion-oath-all ${isAllPledged ? 'is-checked' : ''}`}>
+              <input
+                type="checkbox"
+                checked={isAllPledged}
+                onChange={handleToggleAllPledges}
+                className="champion-oath-item__input"
+              />
+              <span className="champion-oath-item__checkbox champion-oath-item__checkbox--all" aria-hidden="true">
+                {isAllPledged && <span className="champion-oath-item__check">✓</span>}
+              </span>
+              <span className="champion-oath-all__text">
+                <strong>Select All</strong> — I promise all 4! ✨
+              </span>
+            </label>
+
+            <div className="champion-oath-status">
+              {isAllPledged ? (
+                <span className="champion-oath-status__badge is-done">
+                  🎉 All Promises Checked! Certificate Unlocked 🏆
+                </span>
+              ) : (
+                <span className="champion-oath-status__badge">
+                  {pledgedCount} of {PLEDGE_ITEMS.length} Promises Checked
+                </span>
+              )}
+            </div>
+          </div>
+          {errors.pledge && <div className="champion-oath-card__error" role="alert">{errors.pledge}</div>}
         </Reveal>
 
         <div className="champion-cert__layout">
@@ -791,6 +895,12 @@ function CertificateSection({ reduced }) {
                     </div>
                   </div>
 
+                  {!isAllPledged && (
+                    <div className="champion-cert__lock-notice" role="alert">
+                      🔒 Please tick the 4 promises above to unlock certificate creation.
+                    </div>
+                  )}
+
                   <form className="champion-form" onSubmit={handleSubmit} noValidate>
                     <div className="champion-field">
                       <label htmlFor="ch-name">Your Name *</label>
@@ -820,8 +930,9 @@ function CertificateSection({ reduced }) {
                       <div className="champion-form__server-error" role="alert">{serverError} Please try again.</div>
                     )}
 
-                    <button type="submit" className="btn btn-primary btn-lg champion-cta champion-form__submit">
-                      Create My Certificate <span aria-hidden="true">🍊</span>
+                    <button type="submit" className={`btn btn-primary btn-lg champion-cta champion-form__submit ${!isAllPledged ? 'is-locked' : ''}`}>
+                      {isAllPledged ? 'Get My Official Certificate ' : 'Tick Promises Above to Unlock '}
+                      <span aria-hidden="true">{isAllPledged ? '🍊' : '🔒'}</span>
                     </button>
                     <p className="champion-form__note">
                       {emailConfigured
@@ -857,6 +968,82 @@ function OrangeSliceSVG() {
         );
       })}
       <circle cx="50" cy="50" r="5" fill="#FFE7C4" />
+    </svg>
+  );
+}
+
+function SugarCancelIcon() {
+  return (
+    <svg viewBox="0 0 100 100" className="scenefx__sugar-svg" aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="sugar-glow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="3" stdDeviation="3" floodColor="#D32F2F" floodOpacity="0.3" />
+        </filter>
+        <linearGradient id="sugar-ring-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#EF5350" />
+          <stop offset="100%" stopColor="#C62828" />
+        </linearGradient>
+        <linearGradient id="sugar-spoon-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#E2E8F0" />
+          <stop offset="100%" stopColor="#94A3B8" />
+        </linearGradient>
+        <linearGradient id="sugar-cube-top" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#FFFFFF" />
+          <stop offset="100%" stopColor="#F1F5F9" />
+        </linearGradient>
+        <linearGradient id="sugar-cube-left" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#E2E8F0" />
+          <stop offset="100%" stopColor="#CBD5E1" />
+        </linearGradient>
+        <linearGradient id="sugar-cube-right" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#CBD5E1" />
+          <stop offset="100%" stopColor="#94A3B8" />
+        </linearGradient>
+      </defs>
+
+      <circle cx="50" cy="50" r="42" fill="#FFFFFF" opacity="0.96" filter="url(#sugar-glow)" />
+
+      <g transform="translate(0, 1)">
+        <path
+          d="M18 78 Q32 66 41 54"
+          fill="none"
+          stroke="url(#sugar-spoon-grad)"
+          strokeWidth="6"
+          strokeLinecap="round"
+        />
+        <ellipse cx="48" cy="48" rx="15" ry="11" fill="url(#sugar-spoon-grad)" transform="rotate(-28 48 48)" />
+        <ellipse cx="48" cy="47" rx="13" ry="9" fill="#F8FAFC" transform="rotate(-28 48 48)" />
+
+        <g transform="translate(36, 36)">
+          <polygon points="8,0 16,4 8,8 0,4" fill="url(#sugar-cube-top)" stroke="#94A3B8" strokeWidth="0.8" />
+          <polygon points="0,4 8,8 8,17 0,13" fill="url(#sugar-cube-left)" stroke="#94A3B8" strokeWidth="0.8" />
+          <polygon points="8,8 16,4 16,13 8,17" fill="url(#sugar-cube-right)" stroke="#94A3B8" strokeWidth="0.8" />
+        </g>
+
+        <g transform="translate(45, 27)">
+          <polygon points="8,0 16,4 8,8 0,4" fill="url(#sugar-cube-top)" stroke="#94A3B8" strokeWidth="0.8" />
+          <polygon points="0,4 8,8 8,17 0,13" fill="url(#sugar-cube-left)" stroke="#94A3B8" strokeWidth="0.8" />
+          <polygon points="8,8 16,4 16,13 8,17" fill="url(#sugar-cube-right)" stroke="#94A3B8" strokeWidth="0.8" />
+        </g>
+      </g>
+
+      <circle
+        cx="50"
+        cy="50"
+        r="40"
+        fill="none"
+        stroke="url(#sugar-ring-grad)"
+        strokeWidth="8"
+      />
+      <line
+        x1="22"
+        y1="22"
+        x2="78"
+        y2="78"
+        stroke="url(#sugar-ring-grad)"
+        strokeWidth="8"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
