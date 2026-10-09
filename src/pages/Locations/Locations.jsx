@@ -147,8 +147,6 @@ export default function Locations() {
     })
     .filter(Boolean);
 
-  const totalVenuesCount = locations.reduce((acc, loc) => acc + (loc.subLocations?.length || 0), 0);
-
   return (
     <PageShell name="locations">
       <SEO
@@ -234,9 +232,7 @@ export default function Locations() {
                 aria-pressed={activeTab === 'ALL'}
               >
                 <BuildingIcon size={16} />
-                {/* Wrapped so the pill has exactly two flex children —
-                    otherwise the pill's 6px gap lands inside the label. */}
-                <span>All Cities (<CountUp to={totalVenuesCount} duration={1.1} /> Venues)</span>
+                <span>All Cities</span>
               </button>
               {locations.map((loc) => (
                 <button
@@ -246,7 +242,7 @@ export default function Locations() {
                   aria-pressed={activeTab === loc.city}
                 >
                   <LocationIcon size={16} />
-                  <span>{loc.city} ({loc.subLocations?.length || 0})</span>
+                  <span>{loc.city}</span>
                 </button>
               ))}
             </motion.div>
@@ -329,7 +325,7 @@ export default function Locations() {
                   <div className="location-card__image-wrap jt-card-media">
                     <img src={loc.image || '/assets/business-locations.png'} alt={loc.city} loading="lazy" />
                     <span className="location-card__count-badge">
-                      {loc.subLocations?.length || 0} Venues &amp; Spots
+                      Venues &amp; Spots
                     </span>
                   </div>
 
@@ -389,7 +385,7 @@ export default function Locations() {
                   {selectedCity.state && (
                     <span className="modal-subtitle"><LocationIcon size={14} /> {selectedCity.state}</span>
                   )}
-                  <h2>{selectedCity.city} — Active JuiceTap Venues ({selectedCity.subLocations?.length || 0})</h2>
+                  <h2>{selectedCity.city} — Active JuiceTap Venues</h2>
                 </div>
                 <button className="modal-close-btn" onClick={() => setSelectedCity(null)} aria-label="Close modal">
                   <CloseIcon size={20} />
