@@ -87,87 +87,75 @@ export async function fetchLocations(options = {}) {
 
   const now = Date.now();
 
-  // Return cached result if available and fresh
-  if (!forceRefresh && memoryCache && (now - memoryCacheTimestamp < CACHE_TTL_MS)) {
-    return memoryCache;
-  }
-
-  // Deduplicate concurrent fetch requests
-  if (pendingFetchPromise && !forceRefresh) {
-    return pendingFetchPromise;
-  }
-
-  pendingFetchPromise = (async () => {
-    // 1. Load from local Excel CSV file FIRST for instant spreadsheet updates
+  // 1. Primary: Fetch live data directly from Google Apps Script API if configured
+  if (apiUrl && apiUrl !== 'GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
     try {
-      const csvLocations = await fetchCsvLocations();
-      if (csvLocations && csvLocations.length > 0) {
-        const groupedLocations = groupLocationsByCity(csvLocations);
-        const result = {
-          success: true,
-          rawLocations: csvLocations,
-          groupedLocations,
-          isConfigured: true,
-          source: 'local_csv',
-        };
-        memoryCache = result;
-        memoryCacheTimestamp = Date.now();
-        saveLocalStorageCache(result);
-        return result;
-      }
-    } catch (csvErr) {
-      console.warn('[JuiceTap Location Service] CSV fetch warning, trying Google API:', csvErr);
-    }
+      // Append cache-buster timestamp parameter to prevent browser HTTP caching of old sheet rows
+      const cacheBustUrl = `${apiUrl}${apiUrl.includes('?') ? '&' : '?'}_t=${now}`;
+      const response = await fetch(cacheBustUrl, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
 
-    // 2. Secondary fallback to Google Apps Script Web App
-    if (apiUrl && apiUrl !== 'GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
-      try {
-        const response = await fetch(apiUrl, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (data && data.success && Array.isArray(data.locations) && data.locations.length > 0) {
-            const rawLocations = data.locations;
-            const groupedLocations = groupLocationsByCity(rawLocations);
-            const result = {
-              success: true,
-              rawLocations,
-              groupedLocations,
-              isConfigured: true,
-              source: 'google_api',
-            };
-            memoryCache = result;
-            memoryCacheTimestamp = Date.now();
-            saveLocalStorageCache(result);
-            return result;
-          }
+      if (response.ok) {
+        const data = await response.json();
+        if (data && data.success && Array.isArray(data.locations) && data.locations.length > 0) {
+          const rawLocations = data.locations;
+          const groupedLocations = groupLocationsByCity(rawLocations);
+          const result = {
+            success: true,
+            rawLocations,
+            groupedLocations,
+            isConfigured: true,
+            source: 'google_api',
+          };
+          memoryCache = result;
+          memoryCacheTimestamp = Date.now();
+          saveLocalStorageCache(result);
+          return result;
         }
-      } catch (err) {
-        console.error('[JuiceTap Location Service] Google API fetch error:', err);
       }
+    } catch (err) {
+      console.error('[JuiceTap Location Service] Google API fetch error:', err);
     }
+  }
 
-    // Fallback to local storage cache if available
-    const cached = loadLocalStorageCache();
-    if (cached) {
-      return { ...cached, fromCacheOnError: true };
+  // 2. Secondary fallback: Load from local CSV file
+  try {
+    const csvLocations = await fetchCsvLocations();
+    if (csvLocations && csvLocations.length > 0) {
+      const groupedLocations = groupLocationsByCity(csvLocations);
+      const result = {
+        success: true,
+        rawLocations: csvLocations,
+        groupedLocations,
+        isConfigured: true,
+        source: 'local_csv',
+      };
+      memoryCache = result;
+      memoryCacheTimestamp = Date.now();
+      saveLocalStorageCache(result);
+      return result;
     }
+  } catch (csvErr) {
+    console.warn('[JuiceTap Location Service] CSV fetch warning:', csvErr);
+  }
 
-    return {
-      success: false,
-      error: 'Locations are temporarily unavailable. Please check again shortly.',
-      rawLocations: [],
-      groupedLocations: [],
-      isConfigured: true,
-    };
-  })();
+  // Fallback to local storage cache if available
+  const cached = loadLocalStorageCache();
+  if (cached) {
+    return { ...cached, fromCacheOnError: true };
+  }
 
-  return pendingFetchPromise;
+  return {
+    success: false,
+    error: 'Locations are temporarily unavailable. Please check again shortly.',
+    rawLocations: [],
+    groupedLocations: [],
+    isConfigured: true,
+  };
 }
 
 async function fetchCsvLocations() {

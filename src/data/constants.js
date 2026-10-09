@@ -183,20 +183,6 @@ export const LOCATIONS = [
     ]
   },
   {
-    city: 'Jaipur',
-    state: 'Rajasthan',
-    status: 'available',
-    description: 'Delivering 100% natural, ice-cold freshly squeezed orange juice across the Pink City.',
-    image: '/assets/jaipur-location.jpg',
-    subLocations: [
-      { name: 'Mall of Jaipur', address: 'Gandhi Path Rd, B Block, Vaishali Nagar, Jaipur, Rajasthan 302021', latitude: 26.8982, longitude: 75.7482, type: 'Shopping Mall', image: '/assets/jaipur-location.jpg' },
-      { name: 'Metro Mass Hospital', address: 'Shipra Path, Near Technology park, Shanthi Nagar, Mansarovar, Jaipur, Rajasthan 302020', latitude: 26.8532, longitude: 75.7682, type: 'Super Specialty Hospital', image: '/assets/step-4.png' },
-      { name: 'CK Birla Hospital', address: 'Gopalpura Bypass Rd, near Triveni Bridge, Vishveshvariya Nagar, Gopal Pura Mode, Jaipur, Rajasthan 302018', latitude: 26.8622, longitude: 75.7892, type: 'Multi-Specialty Hospital', image: '/assets/hero-machine.png' },
-      { name: 'Indus Hospital', address: 'Shipra Path, near Technology Park, Shanthi Nagar, Mansarovar, Jaipur, Rajasthan 302020', latitude: 26.8535, longitude: 75.7685, type: 'Healthcare Center', image: '/assets/oranges-fresh.png' },
-      { name: 'Rungta Hospital', address: 'Calgiri Marg, near Police Station, Jhalana Gram, Malviya Nagar, Jaipur, Rajasthan 302017', latitude: 26.8542, longitude: 75.8142, type: 'Multi-Specialty Hospital', image: '/assets/machine-showcase.png' },
-    ]
-  },
-  {
     city: 'Statue of Unity',
     state: 'Gujarat',
     status: 'available',
